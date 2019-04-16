@@ -1,42 +1,42 @@
 {
   "project_info": {
-    "project_number": "649469959527",
-    "firebase_url": "https://comp3330-3c90e.firebaseio.com",
-    "project_id": "comp3330-3c90e",
-    "storage_bucket": "comp3330-3c90e.appspot.com"
+    "project_number": "31764206600",
+    "firebase_url": "https://gogocoach-db8ad.firebaseio.com",
+    "project_id": "gogocoach-db8ad",
+    "storage_bucket": "gogocoach-db8ad.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:649469959527:android:46713eebbfe7c0dd",
+        "mobilesdk_app_id": "1:31764206600:android:46713eebbfe7c0dd",
         "android_client_info": {
           "package_name": "hkucs.comp3330.gogocoach"
         }
       },
       "oauth_client": [
         {
-          "client_id": "649469959527-f7n3u4f1bq804vdeujnmvr2gjet0ng7v.apps.googleusercontent.com",
+          "client_id": "31764206600-l03g2dau60gc34jf08j2o8fplmfh6r1o.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "hkucs.comp3330.gogocoach",
-            "certificate_hash": "f54d46e3ae7b5637de01363e252999f211da55e9"
+            "certificate_hash": "3302a6b850595d2b65c169a7e663a8b870a40884"
           }
         },
         {
-          "client_id": "649469959527-a9oj3arhf8jv36qa0a1nlkqdpp336cq8.apps.googleusercontent.com",
+          "client_id": "31764206600-6e4b50ak187a06ni4sbop33dqkansa9j.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDQa3U8azeBGV1o5CGyRh84jzCeVMvF_CE"
+          "current_key": "AIzaSyBOgixqWbgqmtYNAfZk2VsPsZFrgluzpVE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "649469959527-a9oj3arhf8jv36qa0a1nlkqdpp336cq8.apps.googleusercontent.com",
+              "client_id": "31764206600-6e4b50ak187a06ni4sbop33dqkansa9j.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
