@@ -15,11 +15,35 @@
       },
       "oauth_client": [
         {
+          "client_id": "31764206600-il7jekmllio02c4bnvrdd3rq6uoc8qbb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hkucs.comp3330.gogocoach",
+            "certificate_hash": "3b00195b56e2c252f6425c027ebf6160104ec6fd"
+          }
+        },
+        {
+          "client_id": "31764206600-sdfed001qejo53gd3q5ldo6b3ck01dhl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hkucs.comp3330.gogocoach",
+            "certificate_hash": "920efa5ebcfd5581ebba8b7e22eb5791464f00a0"
+          }
+        },
+        {
           "client_id": "31764206600-l03g2dau60gc34jf08j2o8fplmfh6r1o.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "hkucs.comp3330.gogocoach",
             "certificate_hash": "3302a6b850595d2b65c169a7e663a8b870a40884"
+          }
+        },
+        {
+          "client_id": "31764206600-tbcbb3da2u9ho60dd42deh8ujf29nob1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hkucs.comp3330.gogocoach",
+            "certificate_hash": "728e08ad8863d4f3dec6e37033d6d6d7950d7dfb"
           }
         },
         {

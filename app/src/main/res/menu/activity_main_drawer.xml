@@ -5,37 +5,45 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_news_feed"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="News Feed" />
+        <item
             android:id="@+id/nav_map"
             android:icon="@drawable/ic_place_black_24dp"
             android:title="Map Search" />
+        <item
+            android:id="@+id/nav_class_list"
+            android:icon="@drawable/ic_search_black_24dp"
+            android:title="Class List" />
         <item
             android:id="@+id/nav_post_class"
             android:icon="@drawable/ic_menu_camera"
             android:title="Post Class" />
         <item
-            android:id="@+id/nav_news_feed"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="News Feed" />
+            android:id="@+id/nav_edit_profile"
+            android:icon="@drawable/ic_account_circle_black_24dp"
+            android:title="Edit Profile" />
         <item
-            android:id="@+id/nav_setting"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Setting" />
+            android:id="@+id/nav_chat"
+            android:icon="@drawable/ic_chat_black_24dp"
+            android:title="Chat" />
     </group>
 
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
-        </menu>
-    </item>
+    <!--<item android:title="Communicate">-->
+        <!--<menu>-->
+            <!--<item-->
+                <!--android:id="@+id/nav_share"-->
+                <!--android:icon="@drawable/ic_menu_share"-->
+                <!--android:title="Share" />-->
+            <!--<item-->
+                <!--android:id="@+id/nav_send"-->
+                <!--android:icon="@drawable/ic_menu_send"-->
+                <!--android:title="Send" />-->
+        <!--</menu>-->
+    <!--</item>-->
 
-    <item android:title="Communicate">
+    <item android:title="Settings">
         <menu>
             <item
                 android:id="@+id/sign_out"

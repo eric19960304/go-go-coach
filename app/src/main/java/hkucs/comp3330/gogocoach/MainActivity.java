@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
@@ -43,14 +44,14 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
 
         mUsername = ANONYMOUS;
 
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity
             finish();
             return;
         } else {
-            mUsername = mFirebaseUser.getDisplayName();
+
 //            if (mFirebaseUser.getPhotoUrl() != null) {
 //                mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
 //            }
@@ -98,6 +100,17 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+
+        mUsername = mFirebaseUser.getDisplayName();
+        TextView userNameTextView = findViewById(R.id.nav_user);
+        userNameTextView.setText(mUsername);
+        Log.d("myTest", userNameTextView.toString());
+
+        Fragment fragment = new NewsFeedFragment();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
+
         return true;
     }
 
@@ -130,18 +143,18 @@ public class MainActivity extends AppCompatActivity
         Fragment fragment = null;
 
         if (id == R.id.nav_news_feed) {
-            // Handle the camera action
+            fragment = new NewsFeedFragment();
         } else if (id == R.id.nav_post_class) {
-
+            fragment = new PostClassFragment();
+        }else if (id == R.id.nav_chat) {
+            fragment = new ChatFragment();
         } else if (id == R.id.nav_map) {
             fragment = new MapFragment();
-        } else if (id == R.id.nav_setting) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }else if (id == R.id.sign_out) {
+        } else if (id == R.id.nav_class_list) {
+            fragment = new ClassListFragment();
+        }else if (id == R.id.nav_edit_profile) {
+            fragment = new EditProfileFragment();
+        } else if (id == R.id.sign_out) {
              mFirebaseAuth.signOut();
              Auth.GoogleSignInApi.signOut(mGoogleApiClient);
              mUsername = ANONYMOUS;
