@@ -1,6 +1,8 @@
 package hkucs.comp3330.gogocoach;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.Auth;
@@ -24,13 +27,20 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.io.InputStream;
+import java.net.URL;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
 
     public static final String ANONYMOUS = "anonymous";
     private static final String TAG = "MainActivity";
 
+    //TextView usernameTextView;
+    ImageView avatarImageView;
+
     private String mUsername;
+    private String mPhotoUrl;
 
     // Firebase instance variables
     private FirebaseAuth mFirebaseAuth;
@@ -74,10 +84,10 @@ public class MainActivity extends AppCompatActivity
             finish();
             return;
         } else {
-
-//            if (mFirebaseUser.getPhotoUrl() != null) {
-//                mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
-//            }
+            mUsername = mFirebaseUser.getDisplayName();
+            if (mFirebaseUser.getPhotoUrl() != null) {
+                mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
+            }
         }
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -96,6 +106,20 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    //load image from url
+    protected Bitmap doInBackground(String url) {
+        Bitmap bmp = null;
+        try {
+            InputStream in = new URL(url).openStream();
+                    //new java.net.URL(url).openStream();
+            bmp = BitmapFactory.decodeStream(in);
+        } catch (Exception e) {
+            Log.d("Error", e.getMessage());
+            e.printStackTrace();
+        }
+        return bmp;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -111,6 +135,12 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
 
+        // avatarImageView = (ImageView) findViewById(R.id.avatarImageView);
+        // if (mPhotoUrl != null) {
+        //     avatarImageView.setImageBitmap(doInBackground(mPhotoUrl));
+        // } else {
+        //     avatarImageView.setImageResource(R.mipmap.ic_launcher_round);
+        // }
         return true;
     }
 
