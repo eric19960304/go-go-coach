@@ -1,21 +1,32 @@
 package hkucs.comp3330.gogocoach;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private FusedLocationProviderClient mFusedLocationProviderClient;
+
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
 
@@ -31,6 +42,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // Inflate the layout for this fragment
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
+//
+//        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+//
+//
+//        mFusedLocationProviderClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+//            @Override
+//            public void onSuccess(Location location) {
+//                if (location != null) {
+//                    Double lat = location.getLatitude();
+//                    Double lng = location.getLongitude();
+//                    Log.d("myTest", String.format("%f %d", lat, lng));
+//                }
+//            }
+//        });
+
 
         return inflater.inflate(R.layout.fragment_map, container, false);
     }
@@ -53,6 +79,5 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        //Do your stuff here
     }
 }
