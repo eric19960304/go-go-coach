@@ -1,3 +1,1 @@
-HKU COMP3330
-
-by Eric
+HKU COMP3330 by Eric
