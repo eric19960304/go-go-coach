@@ -43,7 +43,9 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_profile" />
+    <include
+        android:id="@+id/include"
+        layout="@layout/content_profile" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/message_fab"
@@ -54,6 +56,17 @@
         app:backgroundTint="@color/pageAccent"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
+        app:rippleColor="@color/common_google_signin_btn_text_dark_focused" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/edit_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_edit_black_24dp"
+        app:backgroundTint="@color/pageAccent"
+        app:layout_anchor="@+id/app_bar"
+        app:layout_anchorGravity="right|top"
         app:rippleColor="@color/common_google_signin_btn_text_dark_focused" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

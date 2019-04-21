@@ -27,11 +27,20 @@ public class EditProfileFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
 
-        FloatingActionButton fab = view.findViewById(R.id.message_fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton message_fab = view.findViewById(R.id.message_fab);
+        message_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "TODO: send message to user", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+        FloatingActionButton edit_fab = view.findViewById(R.id.edit_fab);
+        edit_fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "TODO: edit profile", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
