@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -33,15 +32,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ChatFragment extends Fragment {
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
         TextView messageTextView;
         TextView messengerTextView;
-        ImageView messengerImageView;
+        CircleImageView messengerImageView;
 
         public MessageViewHolder(View v) {
             super(v);
-            messengerImageView = (ImageView) itemView.findViewById(R.id.messengerImageView);
+            messengerImageView = (CircleImageView) itemView.findViewById(R.id.messengerImageView);
             messageTextView = (TextView) itemView.findViewById(R.id.messageTextView);
             messengerTextView = (TextView) itemView.findViewById(R.id.messengerTextView);
 
@@ -61,7 +62,6 @@ public class ChatFragment extends Fragment {
     private Button mSendButton;
     private RecyclerView mMessageRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
-    private ProgressBar mProgressBar;
     private EditText mMessageEditText;
     private ImageView mAddMessageImageView;
     private DatabaseReference mFirebaseDatabaseReference;
@@ -119,7 +119,6 @@ public class ChatFragment extends Fragment {
         }
         final View view =  inflater.inflate(R.layout.fragment_chat, container, false);
 
-        mProgressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         mMessageRecyclerView = (RecyclerView) view.findViewById(R.id.messageRecyclerView);
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mLinearLayoutManager.setStackFromEnd(true);
@@ -168,7 +167,6 @@ public class ChatFragment extends Fragment {
             protected void onBindViewHolder(final MessageViewHolder viewHolder,
                                             int position,
                                             FriendlyMessage friendlyMessage) {
-                mProgressBar.setVisibility(ProgressBar.INVISIBLE);
                 if (friendlyMessage.getText() != null) {
                     viewHolder.messageTextView.setText(friendlyMessage.getName());
                     viewHolder.messageTextView.setVisibility(TextView.VISIBLE);
