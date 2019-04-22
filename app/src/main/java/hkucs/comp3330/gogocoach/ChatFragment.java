@@ -1,7 +1,6 @@
 package hkucs.comp3330.gogocoach;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -16,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,9 +24,6 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -37,41 +32,32 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatFragment extends Fragment {
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
         TextView messageTextView;
-        ImageView messageImageView;
         TextView messengerTextView;
-        CircleImageView messengerImageView;
+        ImageView messengerImageView;
 
         public MessageViewHolder(View v) {
             super(v);
+            messengerImageView = (ImageView) itemView.findViewById(R.id.messengerImageView);
             messageTextView = (TextView) itemView.findViewById(R.id.messageTextView);
-            messageImageView = (ImageView) itemView.findViewById(R.id.messageImageView);
             messengerTextView = (TextView) itemView.findViewById(R.id.messengerTextView);
-            messengerImageView = (CircleImageView) itemView.findViewById(R.id.messengerImageView);
+
         }
     }
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private static final String TAG = "MainActivity";
     public static final String MESSAGES_CHILD = "messages";
-    private static final int REQUEST_INVITE = 1;
     private static final int REQUEST_IMAGE = 2;
+    private static final int VIEW_TYPE_MESSAGE_SENT = 1;
+    private static final int VIEW_TYPE_MESSAGE_RECEIVED = 2;
     private static final String LOADING_IMAGE_URL = "https://www.google.com/images/spin-32.gif";
-    public static final int DEFAULT_MSG_LENGTH_LIMIT = 10;
-    public static final String ANONYMOUS = "anonymous";
-    private static final String MESSAGE_SENT_EVENT = "message_sent";
     private String mUsername;
     private String mPhotoUrl;
-    private SharedPreferences mSharedPreferences;
-    private GoogleApiClient mGoogleApiClient;
-    private static final String MESSAGE_URL = "http://friendlychat.firebase.google.com/message/";
-
+    private String mUserId;
     private Button mSendButton;
     private RecyclerView mMessageRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
@@ -82,25 +68,6 @@ public class ChatFragment extends Fragment {
     private FirebaseRecyclerAdapter<FriendlyMessage, MessageViewHolder>
             mFirebaseAdapter;
 
-    private void putImageInStorage(StorageReference storageReference, Uri uri, final String key) {
-        storageReference.putFile(uri).addOnCompleteListener(getActivity(),
-                new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            FriendlyMessage friendlyMessage =
-                                    new FriendlyMessage(null, mUsername, mPhotoUrl,
-                                            task.getResult().getMetadata().getDownloadUrl()
-                                                    .toString());
-                            mFirebaseDatabaseReference.child(MESSAGES_CHILD).child(key)
-                                    .setValue(friendlyMessage);
-                        } else {
-                            Log.w(TAG, "Image upload task was not successful.",
-                                    task.getException());
-                        }
-                    }
-                });
-    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -113,7 +80,7 @@ public class ChatFragment extends Fragment {
                     Log.d(TAG, "Uri: " + uri.toString());
 
                     FriendlyMessage tempMessage = new FriendlyMessage(null, mUsername, mPhotoUrl,
-                            LOADING_IMAGE_URL);
+                            LOADING_IMAGE_URL, mUserId, "now");
                     mFirebaseDatabaseReference.child(MESSAGES_CHILD).push()
                             .setValue(tempMessage, new DatabaseReference.CompletionListener() {
                                 @Override
@@ -127,7 +94,6 @@ public class ChatFragment extends Fragment {
                                                         .child(key)
                                                         .child(uri.getLastPathSegment());
 
-                                        putImageInStorage(storageReference, uri, key);
                                     } else {
                                         Log.w(TAG, "Unable to write message to database.",
                                                 databaseError.toException());
@@ -147,10 +113,11 @@ public class ChatFragment extends Fragment {
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         mUsername = mFirebaseUser.getDisplayName();
+        mUserId = mFirebaseUser.getUid();
         if (mFirebaseUser.getPhotoUrl() != null) {
             mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
         }
-        View view =  inflater.inflate(R.layout.fragment_chat, container, false);
+        final View view =  inflater.inflate(R.layout.fragment_chat, container, false);
 
         mProgressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         mMessageRecyclerView = (RecyclerView) view.findViewById(R.id.messageRecyclerView);
@@ -177,10 +144,24 @@ public class ChatFragment extends Fragment {
                         .setQuery(messagesRef, parser)
                         .build();
         mFirebaseAdapter = new FirebaseRecyclerAdapter<FriendlyMessage, MessageViewHolder>(options) {
+
             @Override
-            public MessageViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+            public int getItemViewType(int position) {
+                //note: classes should start with uppercase
+                FriendlyMessage model = getItem(position);
+                if (model.getUid() == mUserId) { //note: you'll have to define this method
+                    return VIEW_TYPE_MESSAGE_SENT;
+                } else {
+                    return VIEW_TYPE_MESSAGE_RECEIVED;
+                }
+            }
+            @Override
+            public MessageViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
                 LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-                return new MessageViewHolder(inflater.inflate(R.layout.item_message, viewGroup, false));
+                if(viewType == VIEW_TYPE_MESSAGE_RECEIVED){
+                    return new MessageViewHolder(inflater.inflate(R.layout.item_message_received, viewGroup, false));
+                }
+                return new MessageViewHolder(inflater.inflate(R.layout.item_message_sent, viewGroup, false));
             }
 
             @Override
@@ -189,40 +170,11 @@ public class ChatFragment extends Fragment {
                                             FriendlyMessage friendlyMessage) {
                 mProgressBar.setVisibility(ProgressBar.INVISIBLE);
                 if (friendlyMessage.getText() != null) {
-                    viewHolder.messageTextView.setText(friendlyMessage.getText());
+                    viewHolder.messageTextView.setText(friendlyMessage.getName());
                     viewHolder.messageTextView.setVisibility(TextView.VISIBLE);
-                    viewHolder.messageImageView.setVisibility(ImageView.GONE);
-                } else if (friendlyMessage.getImageUrl() != null) {
-                    String imageUrl = friendlyMessage.getImageUrl();
-                    if (imageUrl.startsWith("gs://")) {
-                        StorageReference storageReference = FirebaseStorage.getInstance()
-                                .getReferenceFromUrl(imageUrl);
-                        storageReference.getDownloadUrl().addOnCompleteListener(
-                                new OnCompleteListener<Uri>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Uri> task) {
-                                        if (task.isSuccessful()) {
-                                            String downloadUrl = task.getResult().toString();
-                                            Glide.with(viewHolder.messageImageView.getContext())
-                                                    .load(downloadUrl)
-                                                    .into(viewHolder.messageImageView);
-                                        } else {
-                                            Log.w(TAG, "Getting download url was not successful.",
-                                                    task.getException());
-                                        }
-                                    }
-                                });
-                    } else {
-                        Glide.with(viewHolder.messageImageView.getContext())
-                                .load(friendlyMessage.getImageUrl())
-                                .into(viewHolder.messageImageView);
-                    }
-                    viewHolder.messageImageView.setVisibility(ImageView.VISIBLE);
-                    viewHolder.messageTextView.setVisibility(TextView.GONE);
                 }
 
-
-                viewHolder.messengerTextView.setText(friendlyMessage.getName());
+                viewHolder.messengerTextView.setText(friendlyMessage.getText());
                 if (friendlyMessage.getPhotoUrl() == null) {
                     viewHolder.messengerImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(),
                             R.drawable.ic_account_circle_black_36dp));
@@ -282,7 +234,9 @@ public class ChatFragment extends Fragment {
                         FriendlyMessage(mMessageEditText.getText().toString(),
                         mUsername,
                         mPhotoUrl,
-                        null /* no image */);
+                        null /* no image */,
+                        mUserId,
+                        "now");
                 mFirebaseDatabaseReference.child(MESSAGES_CHILD)
                         .push().setValue(friendlyMessage);
                 mMessageEditText.setText("");
@@ -294,10 +248,7 @@ public class ChatFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // Select image for image message on click.
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
-                intent.setType("image/*");
-                startActivityForResult(intent, REQUEST_IMAGE);
+
             }
         });
         return view;
