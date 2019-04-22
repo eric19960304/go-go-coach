@@ -7,7 +7,7 @@
     android:padding="@dimen/activity_horizontal_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:paddingBottom="50dp"
-    tools:showIn="@layout/fragment_edit_profile">
+    tools:showIn="@layout/fragment_display_profile">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:src="@drawable/ic_monetization_on_black_24dp" />
+                android:src="@drawable/ic_fitness_center_black_24dp" />
 
             <TextView
                 android:id="@+id/hour_rate_label"
@@ -40,13 +40,13 @@
                 android:textColor="#727272" />
 
             <TextView
-                android:id="@+id/hour_rate"
+                android:id="@+id/available_class"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/hour_rate_label"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_toEndOf="@id/ivContactItem1"
-                android:text="HKD 200"
+                android:text="E-sport, jogging, gym"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#212121" />
 

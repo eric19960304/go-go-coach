@@ -1,7 +1,10 @@
 package hkucs.comp3330.gogocoach;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +14,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class EditProfileFragment extends Fragment {
+public class DisplayProfileFragment extends Fragment {
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
@@ -25,14 +28,17 @@ public class EditProfileFragment extends Fragment {
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
 
-        View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_display_profile, container, false);
 
         FloatingActionButton message_fab = view.findViewById(R.id.message_fab);
         message_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "TODO: send message to user", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Fragment fragment = new ChatFragment();
+
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frame_layout, fragment);
+                fragmentTransaction.commit();
             }
         });
 
@@ -40,8 +46,8 @@ public class EditProfileFragment extends Fragment {
         edit_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "TODO: edit profile", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+                startActivity(intent);
             }
         });
 
