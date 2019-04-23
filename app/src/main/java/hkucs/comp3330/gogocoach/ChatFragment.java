@@ -32,6 +32,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatFragment extends Fragment {
@@ -39,18 +44,20 @@ public class ChatFragment extends Fragment {
         TextView messageTextView;
         TextView messengerTextView;
         CircleImageView messengerImageView;
+        TextView text_message_time;
 
         public MessageViewHolder(View v) {
             super(v);
             messengerImageView = (CircleImageView) itemView.findViewById(R.id.messengerImageView);
             messageTextView = (TextView) itemView.findViewById(R.id.messageTextView);
             messengerTextView = (TextView) itemView.findViewById(R.id.messengerTextView);
+            text_message_time = (TextView) itemView.findViewById(R.id.text_message_time);
 
         }
     }
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "ChatFragment";
     public static final String MESSAGES_CHILD = "messages";
     private static final int REQUEST_IMAGE = 2;
     private static final int VIEW_TYPE_MESSAGE_SENT = 1;
@@ -68,6 +75,15 @@ public class ChatFragment extends Fragment {
     private FirebaseRecyclerAdapter<FriendlyMessage, MessageViewHolder>
             mFirebaseAdapter;
 
+
+    public static String getCurrentTimeUsingCalendar() {
+        Calendar cal = Calendar.getInstance();
+        Date date=cal.getTime();
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        String formattedDate=dateFormat.format(date);
+        return formattedDate;
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -80,7 +96,7 @@ public class ChatFragment extends Fragment {
                     Log.d(TAG, "Uri: " + uri.toString());
 
                     FriendlyMessage tempMessage = new FriendlyMessage(null, mUsername, mPhotoUrl,
-                            LOADING_IMAGE_URL, mUserId, "now");
+                            LOADING_IMAGE_URL, mUserId, getCurrentTimeUsingCalendar());
                     mFirebaseDatabaseReference.child(MESSAGES_CHILD).push()
                             .setValue(tempMessage, new DatabaseReference.CompletionListener() {
                                 @Override
@@ -148,7 +164,7 @@ public class ChatFragment extends Fragment {
             public int getItemViewType(int position) {
                 //note: classes should start with uppercase
                 FriendlyMessage model = getItem(position);
-                if (model.getUid() == mUserId) { //note: you'll have to define this method
+                if (model.getUid().equals(mUserId)) { //note: you'll have to define this method
                     return VIEW_TYPE_MESSAGE_SENT;
                 } else {
                     return VIEW_TYPE_MESSAGE_RECEIVED;
@@ -170,6 +186,10 @@ public class ChatFragment extends Fragment {
                 if (friendlyMessage.getText() != null) {
                     viewHolder.messageTextView.setText(friendlyMessage.getName());
                     viewHolder.messageTextView.setVisibility(TextView.VISIBLE);
+                }
+                if (friendlyMessage.getTime() != null) {
+                    viewHolder.text_message_time.setText(friendlyMessage.getTime());
+                    viewHolder.text_message_time.setVisibility(TextView.VISIBLE);
                 }
 
                 viewHolder.messengerTextView.setText(friendlyMessage.getText());
@@ -234,7 +254,7 @@ public class ChatFragment extends Fragment {
                         mPhotoUrl,
                         null /* no image */,
                         mUserId,
-                        "now");
+                        getCurrentTimeUsingCalendar());
                 mFirebaseDatabaseReference.child(MESSAGES_CHILD)
                         .push().setValue(friendlyMessage);
                 mMessageEditText.setText("");
