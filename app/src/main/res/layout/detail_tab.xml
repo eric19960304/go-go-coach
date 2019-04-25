@@ -1,29 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:background="@android:color/white"
     android:padding="8dp"
-    android:layout_margin="10dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark">
+    <!--<com.google.android.material.tabs.TabLayout-->
+        <!--android:id="@+id/tabs"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:tabBackground="@color/colorAccent">-->
 
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:text="Detail" />
+        <!--<com.google.android.material.tabs.TabItem-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Detail" />-->
 
-        <com.google.android.material.tabs.TabItem
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:text="Contact"/>
+        <!--<com.google.android.material.tabs.TabItem-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Contact" />-->
 
-    </com.google.android.material.tabs.TabLayout>
+    <!--</com.google.android.material.tabs.TabLayout>-->
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/activity_class_detail" />
 
 </LinearLayout>

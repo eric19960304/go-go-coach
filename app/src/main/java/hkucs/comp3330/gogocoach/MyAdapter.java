@@ -10,6 +10,10 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
+import hkucs.comp3330.gogocoach.firebase.Classes;
+
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements View.OnClickListener{
 
     private OnItemClickListener mOnItemClickListener = null;
@@ -19,11 +23,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
     }
 
     private Context mContext;
-    private String[] mData;
+    private ArrayList<Classes> mData;
 
-    public MyAdapter(Context context, String[] data) {
+    public MyAdapter(Context context, ArrayList<Classes> classesData) {
         this.mContext = context;
-        this.mData = data;
+        this.mData = classesData;
     }
 
     @Override
@@ -37,29 +41,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.rateTextView.setText(mData[position]);
+        holder.rateTextView.setText("$" + mData.get(position).price);
+        holder.venueTextView.setText("Location: " + mData.get(position).location);
+        holder.dateTextView.setText("DateTime: "+ mData.get(position).time);
+        holder.avatarImageView.setImageResource(R.drawable.testicon1);
+        holder.coachTextView.setText(mData.get(position).className);
+        holder.classTextView.setText(mData.get(position).name);
         holder.itemView.setTag(position);
-        holder.venueTextView.setText("Location: TBC");
-        holder.dateTextView.setText("Date: TBC");
-        if (position == 1){
-            holder.avatarImageView.setImageResource(R.drawable.testicon1);
-            holder.coachTextView.setText("Coach 1");
-            holder.classTextView.setText("Badminton class");
-        }else if (position == 2){
-            holder.avatarImageView.setImageResource(R.drawable.testicon2);
-            holder.coachTextView.setText("Coach2");
-            holder.classTextView.setText("Golf class");
-        }else{
-            holder.avatarImageView.setImageResource(R.drawable.testicon2);
-            holder.coachTextView.setText("Coach2");
-            holder.classTextView.setText("Golf class2");
-        }
 
     }
 
     @Override
     public int getItemCount() {
-        return mData.length;
+        return mData.size();
     }
 
     @Override

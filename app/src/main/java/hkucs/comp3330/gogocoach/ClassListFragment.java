@@ -13,11 +13,24 @@ import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+
+import hkucs.comp3330.gogocoach.firebase.Classes;
 
 public class ClassListFragment extends Fragment {
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
+    private DatabaseReference mDatabase;
+
+    private View view;
+    private ArrayList<Classes> classesArray;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -25,28 +38,68 @@ public class ClassListFragment extends Fragment {
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference ref = mDatabase.child("classes");
 
-        View view = inflater.inflate(R.layout.fragment_class_list, container, false);
+        view = inflater.inflate(R.layout.fragment_class_list, container, false);
+
+        classesArray = new ArrayList<Classes>();
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                if(dataSnapshot.exists()){
+                    Log.d("classes database", "exists");
+                    for (DataSnapshot coachesSnapshot: dataSnapshot.getChildren()) {
+                        Log.d("coaches data", "exists");
+
+                        for (DataSnapshot coachClassesSnapshot: coachesSnapshot.getChildren()) {
+                            Log.d("coachClassesSnapshot", "exists");
+                            Classes c = coachClassesSnapshot.getValue(Classes.class);
+                            //Log.d("coachClassesSnapshot", c.id +c.price + c.location);
+
+                            classesArray.add(c);
+                        }
+                    }
+
+                    MyAdapter adapter = new MyAdapter(view.getContext(), classesArray);
+
+                    RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+                    recyclerView.setAdapter(adapter);
+
+                    adapter.setOnItemClickListener(new MyAdapter.OnItemClickListener(){
+                        @Override
+                        public void onItemClick(View view , int position){
+                            //Log.d("position: ", String.valueOf(position));
+
+                            Intent intent = new Intent(getActivity(), DetailClassActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+
+                }else{
+                    Log.d("class database", "not exists");
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting data failed, log a message
+                Log.d("class database", "loadClasses:onCancelled", databaseError.toException());
+            }
+        });
+
+        //ref.addValueEventListener(profileListener);
+
+        //Log.d("classesArray: ", String.valueOf(classesArray.size()));
 
         String[] s = new String[3];
         s[0] = "$100";
         s[1] = "$200";
         s[2] = "$300";
-        MyAdapter adapter = new MyAdapter(view.getContext(), s);
-
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        recyclerView.setAdapter(adapter);
-
-        adapter.setOnItemClickListener(new MyAdapter.OnItemClickListener(){
-            @Override
-            public void onItemClick(View view , int position){
-                //Log.d("position: ", String.valueOf(position));
-
-                Intent intent = new Intent(getActivity(), DetailClassActivity.class);
-                startActivity(intent);
-            }
-        });
 
         // Inflate the layout for this fragment
         return view;
