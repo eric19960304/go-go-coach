@@ -19,7 +19,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
     private OnItemClickListener mOnItemClickListener = null;
 
     public interface OnItemClickListener {
-        void onItemClick(View view , int position);
+        void onItemClick(View view , Classes c);
     }
 
     private Context mContext;
@@ -47,7 +47,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
         holder.avatarImageView.setImageResource(R.drawable.testicon1);
         holder.coachTextView.setText(mData.get(position).className);
         holder.classTextView.setText(mData.get(position).name);
-        holder.itemView.setTag(position);
+        holder.itemView.setTag(mData);
 
     }
 
@@ -61,7 +61,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
         if (mOnItemClickListener != null) {
 
             //getTag can get position
-            mOnItemClickListener.onItemClick(v, (int) v.getTag());
+            mOnItemClickListener.onItemClick(v, (Classes) v.getTag());
         }
     }
 

@@ -1,6 +1,8 @@
 package hkucs.comp3330.gogocoach.firebase;
 
-public class Classes {
+import java.io.Serializable;
+
+public class Classes implements Serializable {
     public String name;
     public String description;
     public String number;
