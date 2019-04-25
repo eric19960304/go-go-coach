@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package hkucs.comp3330.gogocoach;
+package hkucs.comp3330.gogocoach.firebase;
 
-public class FriendlyMessage {
+public class Message {
 
     private String id;
     private String text;
@@ -25,10 +25,10 @@ public class FriendlyMessage {
     private String time;
     private String uid;
 
-    public FriendlyMessage() {
+    public Message() {
     }
 
-    public FriendlyMessage(String text, String name, String photoUrl, String imageUrl, String uid, String time) {
+    public Message(String text, String name, String photoUrl, String imageUrl, String uid, String time) {
         this.text = text;
         this.name = name;
         this.photoUrl = photoUrl;

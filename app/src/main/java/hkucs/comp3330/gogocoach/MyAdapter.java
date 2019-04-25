@@ -1,7 +1,7 @@
 package hkucs.comp3330.gogocoach;
 
 import android.content.Context;
-import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +10,13 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements View.OnClickListener{
+
+    private OnItemClickListener mOnItemClickListener = null;
+
+    public interface OnItemClickListener {
+        void onItemClick(View view , int position);
+    }
 
     private Context mContext;
     private String[] mData;
@@ -24,12 +30,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.recycler_class_item, null); //parent, false);
         ViewHolder holder = new ViewHolder(view);
+
+        view.setOnClickListener(this);
         return holder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.rateTextView.setText(mData[position]);
+        holder.itemView.setTag(position);
         holder.venueTextView.setText("Location: TBC");
         holder.dateTextView.setText("Date: TBC");
         if (position == 1){
@@ -51,6 +60,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     @Override
     public int getItemCount() {
         return mData.length;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (mOnItemClickListener != null) {
+
+            //getTag can get position
+            mOnItemClickListener.onItemClick(v, (int) v.getTag());
+        }
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.mOnItemClickListener = listener;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

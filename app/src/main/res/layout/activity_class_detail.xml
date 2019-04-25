@@ -9,7 +9,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="250dp"
         android:background="#37474F"
         android:theme="@style/AppTheme.AppBarOverlay">
 
@@ -22,17 +22,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
                 android:src="@drawable/testicon1" />
 
             <include
                 android:id="@+id/include"
-                layout="@layout/detail_tab"/>
+                layout="@layout/detail_tab" />
 
-            <include
-                android:id="@+id/include"
-                layout="@layout/content_class_detail" />
+
         </LinearLayout>
 
-
     </com.google.android.material.appbar.AppBarLayout>
+
+    <include
+        android:id="@+id/include_content_class"
+        layout="@layout/content_class_detail" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
