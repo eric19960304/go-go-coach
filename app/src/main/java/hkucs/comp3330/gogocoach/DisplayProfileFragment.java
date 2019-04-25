@@ -35,23 +35,31 @@ public class DisplayProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
         // Inflate the layout for this fragment
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        view = inflater.inflate(R.layout.fragment_display_profile, container, false);
+
 
         // get args
         Bundle bundle = this.getArguments();
         if (bundle != null) {
+            // display other users
             userId = bundle.getString("userId");
+            view.findViewById(R.id.edit_fab).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.message_fab).setVisibility(View.GONE);
         }else{
+            // display self profile
+            mFirebaseAuth = FirebaseAuth.getInstance();
+            mFirebaseUser = mFirebaseAuth.getCurrentUser();
             userId = mFirebaseUser.getUid();
+            view.findViewById(R.id.edit_fab).setVisibility(View.GONE);
+            view.findViewById(R.id.message_fab).setVisibility(View.VISIBLE);
         }
 
         // get database
         mDatabase = FirebaseDatabase.getInstance().getReference();
         DatabaseReference profileRef = mDatabase.child("profile").child(userId);
 
-        view = inflater.inflate(R.layout.fragment_display_profile, container, false);
 
         ValueEventListener profileListener = new ValueEventListener() {
             @Override

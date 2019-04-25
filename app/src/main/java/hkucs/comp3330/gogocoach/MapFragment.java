@@ -1,10 +1,11 @@
 package hkucs.comp3330.gogocoach;
 
-import android.app.Activity;
-import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
+
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,7 +18,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -74,5 +78,42 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         Log.d("myTest", latLng.toString());
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15);
         mMap.moveCamera(cameraUpdate);
+
+        // latitude and longitude
+        double latitude = 22.283108;
+        double longitude = 114.136334;
+
+        // create marker
+        MarkerOptions marker = new MarkerOptions().position(new LatLng(latitude, longitude)).title("Coach");
+
+        int height = 200;
+        int width = 100;
+        BitmapDrawable bitmapDraw = (BitmapDrawable)getResources().getDrawable(R.drawable.at_marker);
+        Bitmap b = bitmapDraw.getBitmap();
+        Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
+
+        // Changing marker icon
+        marker.icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
+
+        // adding marker
+        googleMap.addMarker(marker);
+
+        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener(){
+            @Override
+            public boolean onMarkerClick(Marker m) {
+                Log.d("myTest", "clicked");
+                String userId = "Y8Klr3F1xxNJLCRcRKNG8602mYB3";
+
+                Fragment fragment = new DisplayProfileFragment();
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                Bundle bundle = new Bundle();
+                bundle.putString("userId", userId);
+                fragment.setArguments(bundle);
+                fragmentTransaction.replace(R.id.frame_layout, fragment);
+
+                fragmentTransaction.commit();
+                return true;
+            }
+        });
     }
 }
