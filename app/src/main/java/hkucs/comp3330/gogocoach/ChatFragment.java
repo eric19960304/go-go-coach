@@ -38,6 +38,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import hkucs.comp3330.gogocoach.firebase.Message;
 
 public class ChatFragment extends Fragment {
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
@@ -72,7 +73,7 @@ public class ChatFragment extends Fragment {
     private EditText mMessageEditText;
     private ImageView mAddMessageImageView;
     private DatabaseReference mFirebaseDatabaseReference;
-    private FirebaseRecyclerAdapter<FriendlyMessage, MessageViewHolder>
+    private FirebaseRecyclerAdapter<Message, MessageViewHolder>
             mFirebaseAdapter;
 
 
@@ -95,7 +96,7 @@ public class ChatFragment extends Fragment {
                     final Uri uri = data.getData();
                     Log.d(TAG, "Uri: " + uri.toString());
 
-                    FriendlyMessage tempMessage = new FriendlyMessage(null, mUsername, mPhotoUrl,
+                    Message tempMessage = new Message(null, mUsername, mPhotoUrl,
                             LOADING_IMAGE_URL, mUserId, getCurrentTimeUsingCalendar());
                     mFirebaseDatabaseReference.child(MESSAGES_CHILD).push()
                             .setValue(tempMessage, new DatabaseReference.CompletionListener() {
@@ -142,29 +143,28 @@ public class ChatFragment extends Fragment {
 
         // New child entries
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
-        SnapshotParser<FriendlyMessage> parser = new SnapshotParser<FriendlyMessage>() {
+        SnapshotParser<Message> parser = new SnapshotParser<Message>() {
             @Override
-            public FriendlyMessage parseSnapshot(DataSnapshot dataSnapshot) {
-                FriendlyMessage friendlyMessage = dataSnapshot.getValue(FriendlyMessage.class);
-                if (friendlyMessage != null) {
-                    friendlyMessage.setId(dataSnapshot.getKey());
+            public Message parseSnapshot(DataSnapshot dataSnapshot) {
+                Message message = dataSnapshot.getValue(Message.class);
+                if (message != null) {
+                    message.setId(dataSnapshot.getKey());
                 }
-                return friendlyMessage;
+                return message;
             }
         };
 
         DatabaseReference messagesRef = mFirebaseDatabaseReference.child(MESSAGES_CHILD);
-        FirebaseRecyclerOptions<FriendlyMessage> options =
-                new FirebaseRecyclerOptions.Builder<FriendlyMessage>()
+        FirebaseRecyclerOptions<Message> options =
+                new FirebaseRecyclerOptions.Builder<Message>()
                         .setQuery(messagesRef, parser)
                         .build();
-        mFirebaseAdapter = new FirebaseRecyclerAdapter<FriendlyMessage, MessageViewHolder>(options) {
+        mFirebaseAdapter = new FirebaseRecyclerAdapter<Message, MessageViewHolder>(options) {
 
             @Override
             public int getItemViewType(int position) {
-                //note: classes should start with uppercase
-                FriendlyMessage model = getItem(position);
-                if (model.getUid().equals(mUserId)) { //note: you'll have to define this method
+                Message model = getItem(position);
+                if (model.getUid().equals(mUserId)) {
                     return VIEW_TYPE_MESSAGE_SENT;
                 } else {
                     return VIEW_TYPE_MESSAGE_RECEIVED;
@@ -182,23 +182,23 @@ public class ChatFragment extends Fragment {
             @Override
             protected void onBindViewHolder(final MessageViewHolder viewHolder,
                                             int position,
-                                            FriendlyMessage friendlyMessage) {
-                if (friendlyMessage.getText() != null) {
-                    viewHolder.messageTextView.setText(friendlyMessage.getName());
+                                            Message message) {
+                if (message.getText() != null) {
+                    viewHolder.messageTextView.setText(message.getName());
                     viewHolder.messageTextView.setVisibility(TextView.VISIBLE);
                 }
-                if (friendlyMessage.getTime() != null) {
-                    viewHolder.text_message_time.setText(friendlyMessage.getTime());
+                if (message.getTime() != null) {
+                    viewHolder.text_message_time.setText(message.getTime());
                     viewHolder.text_message_time.setVisibility(TextView.VISIBLE);
                 }
 
-                viewHolder.messengerTextView.setText(friendlyMessage.getText());
-                if (friendlyMessage.getPhotoUrl() == null) {
+                viewHolder.messengerTextView.setText(message.getText());
+                if (message.getPhotoUrl() == null) {
                     viewHolder.messengerImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(),
                             R.drawable.ic_account_circle_black_36dp));
                 } else {
                     Glide.with(ChatFragment.this)
-                            .load(friendlyMessage.getPhotoUrl())
+                            .load(message.getPhotoUrl())
                             .into(viewHolder.messengerImageView);
                 }
 
@@ -248,15 +248,15 @@ public class ChatFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // Send messages on click.
-                FriendlyMessage friendlyMessage = new
-                        FriendlyMessage(mMessageEditText.getText().toString(),
+                Message message = new
+                        Message(mMessageEditText.getText().toString(),
                         mUsername,
                         mPhotoUrl,
                         null /* no image */,
                         mUserId,
                         getCurrentTimeUsingCalendar());
                 mFirebaseDatabaseReference.child(MESSAGES_CHILD)
-                        .push().setValue(friendlyMessage);
+                        .push().setValue(message);
                 mMessageEditText.setText("");
             }
         });
