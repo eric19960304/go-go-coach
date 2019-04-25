@@ -1,1 +1,3 @@
-HKU COMP3330 by Eric
+# HKU COMP3330 Group Project
+
+A coach finding app for sports including e-sport.
