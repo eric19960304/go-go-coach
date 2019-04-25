@@ -102,7 +102,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public boolean onMarkerClick(Marker m) {
                 Log.d("myTest", "clicked");
-                String userId = "Y8Klr3F1xxNJLCRcRKNG8602mYB3";
+                String userId = "lPmi3QknXvdxajhsyyFt85e9ivo1";
 
                 Fragment fragment = new DisplayProfileFragment();
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
