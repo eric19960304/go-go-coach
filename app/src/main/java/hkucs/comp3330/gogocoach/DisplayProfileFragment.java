@@ -29,17 +29,27 @@ public class DisplayProfileFragment extends Fragment {
     private DatabaseReference mDatabase;
     private View view;
     private Profile currentProfile = new Profile();
+    private String userId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
+        // Inflate the layout for this fragment
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
+        // get args
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            userId = bundle.getString("userId");
+        }else{
+            userId = mFirebaseUser.getUid();
+        }
+
+        // get database
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference profileRef = mDatabase.child("profile").child(mFirebaseUser.getUid());
+        DatabaseReference profileRef = mDatabase.child("profile").child(userId);
 
         view = inflater.inflate(R.layout.fragment_display_profile, container, false);
 
@@ -94,6 +104,7 @@ public class DisplayProfileFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), EditProfileActivity.class);
                 intent.putExtra("currentProfile", currentProfile);
+                intent.putExtra("userId", userId);
                 startActivity(intent);
             }
         });

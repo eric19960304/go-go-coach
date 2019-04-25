@@ -11,27 +11,22 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.w3c.dom.Text;
-
 import hkucs.comp3330.gogocoach.firebase.Profile;
 
 public class EditProfileActivity extends AppCompatActivity {
 
-    private FirebaseAuth mFirebaseAuth;
-    private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
     private DatabaseReference profileRef;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
-
+        userId = getIntent().getStringExtra("userId");
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        profileRef = mDatabase.child("profile").child(mFirebaseUser.getUid());
+        profileRef = mDatabase.child("profile").child(userId);
 
         Profile currentProfile = (Profile) getIntent().getSerializableExtra("currentProfile");
         if(currentProfile.sportTypes!=null){
