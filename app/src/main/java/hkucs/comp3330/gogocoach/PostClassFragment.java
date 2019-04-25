@@ -61,6 +61,7 @@ public class PostClassFragment extends Fragment {
             public void onClick(View v) {
                 Map<String, Object> classData = new HashMap<>();
                 String userId=mFirebaseUser.getUid();
+                String name=mFirebaseUser.getDisplayName();
                 classData.put("location", location.getText().toString());
                 classData.put("time", time.getText().toString());
                 classData.put("description", description.getText().toString());
@@ -68,6 +69,7 @@ public class PostClassFragment extends Fragment {
                 classData.put("type", type.getText().toString());
                 classData.put("number", noOfPeople.getText().toString());
                 classData.put("id",userId);
+                classData.put("name",name);
                 mRootRef.child("classes").child(userId).child(className.getText().toString()).setValue(classData);
 
             }
