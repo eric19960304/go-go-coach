@@ -69,10 +69,11 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_chat_black_white"
+        android:visibility="gone"
         app:backgroundTint="@color/pageAccent"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
-        app:rippleColor="@color/common_google_signin_btn_text_dark_focused" />
+        app:rippleColor="@color/common_google_signin_btn_text_dark_focused"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/edit_fab"

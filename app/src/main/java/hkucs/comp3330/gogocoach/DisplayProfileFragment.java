@@ -28,6 +28,7 @@ public class DisplayProfileFragment extends Fragment {
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
     private View view;
+    private Profile currentProfile = new Profile();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,19 +48,21 @@ public class DisplayProfileFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 if(dataSnapshot.exists()){
-                    Log.d("myTest", "exists");
-                    Profile p = dataSnapshot.getValue(Profile.class);
+                    Log.d("myTest", "profile exists");
+                    currentProfile = dataSnapshot.getValue(Profile.class);
 
                     view.findViewById(R.id.loadingSpinner).setVisibility(View.GONE);
+                    view.findViewById(R.id.profile_content_empty).setVisibility(View.GONE);
                     view.findViewById(R.id.profile_content).setVisibility(View.VISIBLE);
 
-                    ((TextView) view.findViewById(R.id.available_class)).setText(p.sportTypes);
-                    ((TextView) view.findViewById(R.id.bio)).setText(p.bio);
-                    ((TextView) view.findViewById(R.id.contact_number)).setText(p.contactNumber);
-                    ((TextView) view.findViewById(R.id.email)).setText(p.email);
+                    ((TextView) view.findViewById(R.id.available_class)).setText(currentProfile.sportTypes);
+                    ((TextView) view.findViewById(R.id.bio)).setText(currentProfile.bio);
+                    ((TextView) view.findViewById(R.id.contact_number)).setText(currentProfile.contactNumber);
+                    ((TextView) view.findViewById(R.id.email)).setText(currentProfile.email);
                 }else{
-                    Log.d("myTest", "not exists");
+                    Log.d("myTest", "profile not exists");
                     view.findViewById(R.id.loadingSpinner).setVisibility(View.GONE);
+                    view.findViewById(R.id.profile_content).setVisibility(View.GONE);
                     view.findViewById(R.id.profile_content_empty).setVisibility(View.VISIBLE);
                 }
 
@@ -90,6 +93,7 @@ public class DisplayProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+                intent.putExtra("currentProfile", currentProfile);
                 startActivity(intent);
             }
         });

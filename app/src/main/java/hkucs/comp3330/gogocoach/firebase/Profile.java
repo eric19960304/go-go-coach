@@ -1,6 +1,8 @@
 package hkucs.comp3330.gogocoach.firebase;
 
-public class Profile{
+import java.io.Serializable;
+
+public class Profile implements Serializable {
     public String sportTypes;
     public String bio;
     public String email;

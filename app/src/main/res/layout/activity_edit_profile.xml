@@ -6,10 +6,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <ScrollView
-        android:layout_height="match_parent"
         android:layout_width="fill_parent"
-        >
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -21,16 +25,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
-                android:text="Sport Type"
+                android:text="Sport Types"
                 android:textSize="20dp"
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/className"
+                android:id="@+id/sportTypesInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="5"
-                android:inputType="text" />
+                android:inputType="text"
+                android:text="" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -39,13 +44,14 @@
                 android:text="Bio"
                 android:textSize="20dp"
                 android:textStyle="bold" />
+
             <EditText
-                android:id="@+id/location"
+                android:id="@+id/bioInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="5"
-                android:inputType="text" />
-
+                android:inputType="text"
+                android:text="" />
 
 
             <TextView
@@ -57,11 +63,12 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/time"
+                android:id="@+id/emailInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="5"
-                android:inputType="text" />
+                android:inputType="text"
+                android:text="" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -72,12 +79,12 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/description"
+                android:id="@+id/contactNumberInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="5"
-                android:inputType="text" />
-
+                android:inputType="text"
+                android:text="" />
 
 
             <LinearLayout
@@ -86,7 +93,7 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/addClassButton"
+                    android:id="@+id/cancelButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -96,13 +103,13 @@
                     android:layout_marginBottom="8dp"
                     android:layout_weight="1"
                     android:background="@color/page"
-                    android:text="Reset"
+                    android:text="Cancel"
                     android:textColor="#ffffff "
-                    app:layout_constraintHorizontal_chainStyle="spread"></Button>
+                    app:layout_constraintHorizontal_chainStyle="spread" />
 
 
                 <Button
-                    android:id="@+id/resetButton"
+                    android:id="@+id/submitButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
@@ -113,9 +120,7 @@
                     android:layout_weight="1"
                     android:background="@color/pageAccent"
                     android:text="Save Profile"
-                    android:textColor="#ffffff"></Button>
-
-
+                    android:textColor="#ffffff" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

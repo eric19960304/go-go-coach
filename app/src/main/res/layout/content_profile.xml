@@ -46,7 +46,7 @@
                 android:layout_below="@id/available_class_label"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_toEndOf="@id/ivContactItem1"
-                android:text="E-sport, jogging, gym"
+                android:text=""
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#212121" />
 
@@ -89,7 +89,7 @@
                 android:layout_toEndOf="@id/ivContactItem3"
                 android:ellipsize="none"
                 android:maxLines="10"
-                android:text="I have a experienced E-sports player who has won several Hong Kong regional Championships and is enthusiastic about coaching new talents."
+                android:text=""
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#212121" />
 
@@ -135,7 +135,7 @@
                 android:layout_toEndOf="@id/ivContactItem5"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="antony@example.com"
+                android:text=""
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#212121" />
 
@@ -163,7 +163,7 @@
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="8dp"
                 android:layout_toEndOf="@id/ivContactItem6"
-                android:text="Contact Number"
+                android:text=""
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="#727272" />
 
@@ -176,7 +176,7 @@
                 android:layout_toEndOf="@id/ivContactItem6"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="(+852) 1234 5678"
+                android:text=""
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#212121" />
 
