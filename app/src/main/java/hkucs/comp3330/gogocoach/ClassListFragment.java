@@ -71,10 +71,20 @@ public class ClassListFragment extends Fragment {
 
                     adapter.setOnItemClickListener(new MyAdapter.OnItemClickListener(){
                         @Override
-                        public void onItemClick(View view , int position){
+                        public void onItemClick(View view , Classes c){
                             //Log.d("position: ", String.valueOf(position));
 
                             Intent intent = new Intent(getActivity(), DetailClassActivity.class);
+                            intent.putExtra("classes", c);
+//                            intent.putExtra("className", c.className);
+//                            intent.putExtra("description", c.description);
+//                            intent.putExtra("id", c.id);
+//                            intent.putExtra("location", c.location);
+//                            intent.putExtra("name", c.name);
+//                            intent.putExtra("number", c.number);
+//                            intent.putExtra("price", c.price);
+//                            intent.putExtra("time", c.time);
+//                            intent.putExtra("type", c.type);
                             startActivity(intent);
                         }
                     });
