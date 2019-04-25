@@ -86,8 +86,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // create marker
         MarkerOptions marker = new MarkerOptions().position(new LatLng(latitude, longitude)).title("Coach");
 
-        int height = 200;
-        int width = 100;
+        int height = 300;
+        int width = 150;
         BitmapDrawable bitmapDraw = (BitmapDrawable)getResources().getDrawable(R.drawable.at_marker);
         Bitmap b = bitmapDraw.getBitmap();
         Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);

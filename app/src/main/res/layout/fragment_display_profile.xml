@@ -23,11 +23,13 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
+                android:id="@+id/profile_icon"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerInside"
                 android:adjustViewBounds="true"
-                android:src="@drawable/antony_icon"
+                android:src="@drawable/default_user_icon"
+                android:padding="5dp"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.7" />
 

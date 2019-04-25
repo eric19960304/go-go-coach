@@ -74,9 +74,10 @@ public class MainActivity extends AppCompatActivity
             return;
         } else {
 
-//            if (mFirebaseUser.getPhotoUrl() != null) {
-//                mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
-//            }
+            if (mFirebaseUser.getPhotoUrl() != null) {
+                String mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
+                Log.d("myTest", mPhotoUrl);
+            }
         }
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)

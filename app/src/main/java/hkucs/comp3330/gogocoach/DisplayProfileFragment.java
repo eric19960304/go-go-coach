@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -45,15 +46,16 @@ public class DisplayProfileFragment extends Fragment {
         if (bundle != null) {
             // display other users
             userId = bundle.getString("userId");
-            view.findViewById(R.id.edit_fab).setVisibility(View.VISIBLE);
-            view.findViewById(R.id.message_fab).setVisibility(View.GONE);
+            view.findViewById(R.id.edit_fab).setVisibility(View.GONE);
+            view.findViewById(R.id.message_fab).setVisibility(View.VISIBLE);
+            ((ImageView) view.findViewById(R.id.profile_icon)).setImageDrawable(getResources().getDrawable(R.drawable.at_icon));
         }else{
             // display self profile
             mFirebaseAuth = FirebaseAuth.getInstance();
             mFirebaseUser = mFirebaseAuth.getCurrentUser();
             userId = mFirebaseUser.getUid();
-            view.findViewById(R.id.edit_fab).setVisibility(View.GONE);
-            view.findViewById(R.id.message_fab).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.edit_fab).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.message_fab).setVisibility(View.GONE);
         }
 
         // get database
