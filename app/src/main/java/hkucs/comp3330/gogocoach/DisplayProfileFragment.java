@@ -10,14 +10,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import hkucs.comp3330.gogocoach.firebase.Profile;
 
 public class DisplayProfileFragment extends Fragment {
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
+    private DatabaseReference mDatabase;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -26,6 +30,11 @@ public class DisplayProfileFragment extends Fragment {
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
+        Profile p = new Profile("testSportTypes", "Test bio", "test email", "test contactNumber");
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("profile").child(mFirebaseUser.getUid()).setValue(p);
 
 
         View view = inflater.inflate(R.layout.fragment_display_profile, container, false);
@@ -53,4 +62,5 @@ public class DisplayProfileFragment extends Fragment {
 
         return view;
     }
+
 }
