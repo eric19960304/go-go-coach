@@ -107,6 +107,20 @@
             android:layout_height="wrap_content"
             android:ems="5"
             android:inputType="text" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="Number of people"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/people"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="5"
+            android:inputType="text" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -114,7 +128,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/addClassButton"
+                android:id="@+id/resetButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -130,7 +144,7 @@
 
 
             <Button
-                android:id="@+id/resetButton"
+                android:id="@+id/addClassButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
