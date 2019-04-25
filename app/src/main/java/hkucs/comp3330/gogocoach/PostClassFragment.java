@@ -68,6 +68,7 @@ public class PostClassFragment extends Fragment {
                 classData.put("price", price.getText().toString());
                 classData.put("type", type.getText().toString());
                 classData.put("number", noOfPeople.getText().toString());
+                classData.put("className",className.getText().toString());
                 classData.put("id",userId);
                 classData.put("name",name);
                 mRootRef.child("classes").child(userId).child(className.getText().toString()).setValue(classData);
