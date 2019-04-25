@@ -5,15 +5,20 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import hkucs.comp3330.gogocoach.firebase.Profile;
 
@@ -22,6 +27,7 @@ public class DisplayProfileFragment extends Fragment {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
+    private View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,13 +37,41 @@ public class DisplayProfileFragment extends Fragment {
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
-        Profile p = new Profile("testSportTypes", "Test bio", "test email", "test contactNumber");
-
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("profile").child(mFirebaseUser.getUid()).setValue(p);
+        DatabaseReference profileRef = mDatabase.child("profile").child(mFirebaseUser.getUid());
 
+        view = inflater.inflate(R.layout.fragment_display_profile, container, false);
 
-        View view = inflater.inflate(R.layout.fragment_display_profile, container, false);
+        ValueEventListener profileListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                if(dataSnapshot.exists()){
+                    Log.d("myTest", "exists");
+                    Profile p = dataSnapshot.getValue(Profile.class);
+
+                    view.findViewById(R.id.loadingSpinner).setVisibility(View.GONE);
+                    view.findViewById(R.id.profile_content).setVisibility(View.VISIBLE);
+
+                    ((TextView) view.findViewById(R.id.available_class)).setText(p.sportTypes);
+                    ((TextView) view.findViewById(R.id.bio)).setText(p.bio);
+                    ((TextView) view.findViewById(R.id.contact_number)).setText(p.contactNumber);
+                    ((TextView) view.findViewById(R.id.email)).setText(p.email);
+                }else{
+                    Log.d("myTest", "not exists");
+                    view.findViewById(R.id.loadingSpinner).setVisibility(View.GONE);
+                    view.findViewById(R.id.profile_content_empty).setVisibility(View.VISIBLE);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting data failed, log a message
+                Log.d("myTest", "loadPost:onCancelled", databaseError.toException());
+            }
+        };
+        profileRef.addValueEventListener(profileListener);
 
         FloatingActionButton message_fab = view.findViewById(R.id.message_fab);
         message_fab.setOnClickListener(new View.OnClickListener() {
