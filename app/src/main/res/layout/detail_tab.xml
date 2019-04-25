@@ -11,11 +11,17 @@
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark">
 
         <com.google.android.material.tabs.TabItem
-            android:text="Detail"/>
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:text="Detail" />
+
         <com.google.android.material.tabs.TabItem
+            android:layout_height="20dp"
+            android:layout_width="20dp"
             android:text="Contact"/>
 
     </com.google.android.material.tabs.TabLayout>

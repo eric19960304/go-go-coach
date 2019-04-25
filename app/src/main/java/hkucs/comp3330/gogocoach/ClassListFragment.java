@@ -1,14 +1,16 @@
 package hkucs.comp3330.gogocoach;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -35,6 +37,16 @@ public class ClassListFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new MyAdapter.OnItemClickListener(){
+            @Override
+            public void onItemClick(View view , int position){
+                //Log.d("position: ", String.valueOf(position));
+
+                Intent intent = new Intent(getActivity(), DetailClassActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // Inflate the layout for this fragment
         return view;
