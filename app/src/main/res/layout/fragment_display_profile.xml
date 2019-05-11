@@ -85,7 +85,7 @@
         android:src="@drawable/ic_edit_black_24dp"
         android:visibility="gone"
         app:backgroundTint="@color/pageAccent"
-        app:layout_anchor="@+id/app_bar"
+        app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="right|top"
         app:rippleColor="@color/common_google_signin_btn_text_dark_focused" />
 

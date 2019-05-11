@@ -1,5 +1,7 @@
 package hkucs.comp3330.gogocoach;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
@@ -9,15 +11,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.w3c.dom.Text;
+
+import hkucs.comp3330.gogocoach.firebase.Classes;
+
 
 public class PostClassFragment extends Fragment {
 
@@ -30,8 +41,13 @@ public class PostClassFragment extends Fragment {
     private EditText noOfPeople;
     private EditText type;
     private EditText price;
-    private EditText location;
+    private TextView location;
+    private Button locationButton;
     private EditText time;
+    private Double latitude;
+    private Double longitude;
+    private final static int PLACE_PICKER_REQUEST = 999;
+
 
     private DatabaseReference mRootRef;
 
@@ -51,27 +67,54 @@ public class PostClassFragment extends Fragment {
         noOfPeople = (EditText) view.findViewById(R.id.people);
         type= (EditText) view.findViewById(R.id.type);
         time= (EditText) view.findViewById(R.id.time);
-        location= (EditText) view.findViewById(R.id.location);
+        locationButton= (Button) view.findViewById(R.id.pickLocationButton);
         price= (EditText) view.findViewById(R.id.price);
+        location = (TextView) view.findViewById((R.id.location));
 
-
+        locationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // open location picker
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                LatLng southwest = new LatLng(22.224705, 113.887081);
+                LatLng northeast = new LatLng(22.483973, 114.300893);
+                LatLngBounds bound = new LatLngBounds(southwest, northeast);
+                builder.setLatLngBounds(bound);
+                try {
+                    // for activty
+                    startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
+                    // for fragment
+                    //startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesRepairableException e) {
+                    e.printStackTrace();
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         addClassButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Map<String, Object> classData = new HashMap<>();
                 String userId=mFirebaseUser.getUid();
                 String name=mFirebaseUser.getDisplayName();
-                classData.put("location", location.getText().toString());
-                classData.put("time", time.getText().toString());
-                classData.put("description", description.getText().toString());
-                classData.put("price", price.getText().toString());
-                classData.put("type", type.getText().toString());
-                classData.put("number", noOfPeople.getText().toString());
-                classData.put("className",className.getText().toString());
-                classData.put("id",userId);
-                classData.put("name",name);
-                mRootRef.child("classes").child(userId).child(className.getText().toString()).setValue(classData);
+                String photoUrl = mFirebaseUser.getPhotoUrl().toString();
+                Classes data = new Classes(
+                        userId,
+                        name,
+                        description.getText().toString(),
+                        noOfPeople.getText().toString(),
+                        className.getText().toString(),
+                        price.getText().toString(),
+                        time.getText().toString(),
+                        type.getText().toString(),
+                        location.getText().toString(),
+                        latitude,
+                        longitude,
+                        photoUrl
+                );
+
+                mRootRef.child("classes").child(userId).child(className.getText().toString()).setValue(data);
 
             }
         });
@@ -84,7 +127,6 @@ public class PostClassFragment extends Fragment {
                 noOfPeople.setText("");
                 type.setText("");
                 time.setText("");
-                location.setText("");
                 price.setText("");
 
             }
@@ -92,4 +134,20 @@ public class PostClassFragment extends Fragment {
 
         return view;
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode){
+                case PLACE_PICKER_REQUEST:
+                    Place place = PlacePicker.getPlace(getActivity(), data);
+                    location.setText(String.format("Location: %s", place.getName()));
+                    latitude = place.getLatLng().latitude;
+                    longitude = place.getLatLng().longitude;
+            }
+        }
+    }
+
 }

@@ -1,8 +1,10 @@
 package hkucs.comp3330.gogocoach;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -56,7 +58,7 @@ public class ClassListFragment extends Fragment {
 
                         for (DataSnapshot coachClassesSnapshot: coachesSnapshot.getChildren()) {
                             Log.d("coachClassesSnapshot", "exists");
-                            Classes c = coachClassesSnapshot.getValue(Classes.class);
+                            Classes c = (Classes) coachClassesSnapshot.getValue(Classes.class);
                             //Log.d("coachClassesSnapshot", c.id +c.price + c.location);
 
                             classesArray.add(c);
@@ -76,16 +78,7 @@ public class ClassListFragment extends Fragment {
 
                             Intent intent = new Intent(getActivity(), DetailClassActivity.class);
                             intent.putExtra("classes", c);
-//                            intent.putExtra("className", c.className);
-//                            intent.putExtra("description", c.description);
-//                            intent.putExtra("id", c.id);
-//                            intent.putExtra("location", c.location);
-//                            intent.putExtra("name", c.name);
-//                            intent.putExtra("number", c.number);
-//                            intent.putExtra("price", c.price);
-//                            intent.putExtra("time", c.time);
-//                            intent.putExtra("type", c.type);
-                            startActivity(intent);
+                            startActivityForResult(intent, 1);
                         }
                     });
 
@@ -113,5 +106,35 @@ public class ClassListFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("myTest", "resultCode:"+resultCode);
+        if (resultCode == Activity.RESULT_OK) {
+
+            final String action = data.getExtras().getString("action");
+            Log.d("myTest", action);
+            if(action.equals(DetailClassActivity.ACTION_BROWSE_PROFILE)){
+                Log.d("myTest", "ACTION_BROWSE_PROFILE");
+                String userId = data.getExtras().getString("userId");
+                String photoUrl = data.getExtras().getString("photoUrl");
+
+                Fragment fragment = new DisplayProfileFragment();
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                Bundle bundle = new Bundle();
+                bundle.putString("userId", userId);
+                bundle.putString("photoUrl", photoUrl);
+                fragment.setArguments(bundle);
+                fragmentTransaction.replace(R.id.frame_layout, fragment);
+
+                fragmentTransaction.commit();
+            }
+            if(action.equals(DetailClassActivity.ACTION_BOOKING)){
+                final Classes classToBook = (Classes) data.getExtras().getSerializable("classToBook");
+                // TODO
+            }
+        }
     }
 }

@@ -23,14 +23,38 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
+                android:id="@+id/avatarImageView"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:layout_gravity="center"
-                android:layout_marginBottom="10dp"
-                android:src="@drawable/testicon1" />
+                android:layout_marginBottom="10dp" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/profile_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_perm_contact_calendar_black_24dp"
+        android:visibility="visible"
+        app:backgroundTint="@color/pageAccent"
+        app:layout_anchor="@+id/app_bar"
+        app:layout_anchorGravity="bottom|center"
+        app:rippleColor="@color/common_google_signin_btn_text_dark_focused" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/booking_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_booking"
+        android:visibility="visible"
+        app:backgroundTint="@color/pageAccent"
+        app:layout_anchor="@+id/app_bar"
+        app:layout_anchorGravity="bottom|right"
+        app:rippleColor="@color/common_google_signin_btn_text_dark_focused" />
 
     <include
         android:id="@+id/include_content_class"

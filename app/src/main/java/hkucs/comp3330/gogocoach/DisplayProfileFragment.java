@@ -1,6 +1,13 @@
 package hkucs.comp3330.gogocoach;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -21,6 +28,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.InputStream;
+import java.net.URL;
+
 import hkucs.comp3330.gogocoach.firebase.Profile;
 
 public class DisplayProfileFragment extends Fragment {
@@ -31,6 +41,8 @@ public class DisplayProfileFragment extends Fragment {
     private View view;
     private Profile currentProfile = new Profile();
     private String userId;
+    private ImageView profileIcon;
+    private String photoUrl;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,23 +52,40 @@ public class DisplayProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_display_profile, container, false);
 
+        profileIcon = (ImageView) view.findViewById(R.id.profile_icon);
 
         // get args
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             // display other users
             userId = bundle.getString("userId");
+            photoUrl = bundle.getString("photoUrl");
+            // can chat only
             view.findViewById(R.id.edit_fab).setVisibility(View.GONE);
             view.findViewById(R.id.message_fab).setVisibility(View.VISIBLE);
-            ((ImageView) view.findViewById(R.id.profile_icon)).setImageDrawable(getResources().getDrawable(R.drawable.at_icon));
         }else{
             // display self profile
             mFirebaseAuth = FirebaseAuth.getInstance();
             mFirebaseUser = mFirebaseAuth.getCurrentUser();
             userId = mFirebaseUser.getUid();
+            photoUrl = mFirebaseUser.getPhotoUrl().toString();
+            // can edit only
             view.findViewById(R.id.edit_fab).setVisibility(View.VISIBLE);
             view.findViewById(R.id.message_fab).setVisibility(View.GONE);
         }
+        // set avatar
+        (new Thread(new Runnable(){
+            @Override
+            public void run() {
+                final Bitmap avatar = getCroppedBitmap(Bitmap.createScaledBitmap(loadImageFromNetwork(photoUrl), 500, 500, true));
+                profileIcon.post(new Runnable(){
+                    @Override
+                    public void run() {
+                        profileIcon.setImageBitmap(avatar);
+                    }
+                });
+            }
+        })).start();
 
         // get database
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -120,6 +149,42 @@ public class DisplayProfileFragment extends Fragment {
         });
 
         return view;
+    }
+
+    public Bitmap loadImageFromNetwork(String url) {
+        try {
+            Bitmap bitmap = BitmapFactory.decodeStream
+                    ((InputStream) new URL(url).getContent());
+            return bitmap;
+        } catch(
+                Exception e)
+
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Bitmap getCroppedBitmap(Bitmap bitmap) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        // canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
+                bitmap.getWidth() / 2, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        //Bitmap _bmp = Bitmap.createScaledBitmap(output, 60, 60, false);
+        //return _bmp;
+        return output;
     }
 
 }
