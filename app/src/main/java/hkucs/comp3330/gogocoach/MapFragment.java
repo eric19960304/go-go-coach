@@ -63,8 +63,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
-    private ArrayList classesArray;
-
 
 
     public MapFragment() {
@@ -106,7 +104,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         DatabaseReference ref = mDatabase.child("classes");
-        classesArray = new ArrayList<Classes>();
 
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -117,11 +114,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                         for (DataSnapshot coachClassesSnapshot: coachesSnapshot.getChildren()) {
                             Classes c = (Classes) coachClassesSnapshot.getValue(Classes.class);
-                            classesArray.add(c);
                             (new DownloadAvatarTask()).execute(c);
                         }
                     }
-                    // all classes got
                 }
             }
 
@@ -152,14 +147,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
 
         protected void onPostExecute(Bitmap avatarMarkerBitmap) {
-            // latitude and longitude
-            double latitude = 22.283108;
-            double longitude = 114.136334;
-
             // adding marker
             mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(latitude, longitude))
-                    .title("Coach")
+                    .position(new LatLng(classes.latitude, classes.longitude))
+                    .title(classes.name+": "+classes.className)
                     .icon(BitmapDescriptorFactory.fromBitmap(avatarMarkerBitmap))
             );
 

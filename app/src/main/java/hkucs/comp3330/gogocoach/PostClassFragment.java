@@ -96,6 +96,18 @@ public class PostClassFragment extends Fragment {
         addClassButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(description.getText().toString().equals("") ||
+                        noOfPeople.getText().toString().equals("") ||
+                        className.getText().toString().equals("") ||
+                        price.getText().toString().equals("") ||
+                        time.getText().toString().equals("") ||
+                        type.getText().toString().equals("") ||
+                        location.getText().toString().equals("")
+                ){
+                    Toast.makeText(getContext(), "Please enter all information!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 String userId=mFirebaseUser.getUid();
                 String name=mFirebaseUser.getDisplayName();
                 String photoUrl = mFirebaseUser.getPhotoUrl().toString();
@@ -116,6 +128,14 @@ public class PostClassFragment extends Fragment {
 
                 mRootRef.child("classes").child(userId).child(className.getText().toString()).setValue(data);
 
+                Toast.makeText(getContext(), "Class is added.", Toast.LENGTH_LONG).show();
+                className.setText("");
+                description .setText("");
+                noOfPeople.setText("");
+                type.setText("");
+                time.setText("");
+                price.setText("");
+                location.setText("Location");
             }
         });
 
@@ -128,7 +148,6 @@ public class PostClassFragment extends Fragment {
                 type.setText("");
                 time.setText("");
                 price.setText("");
-
             }
         });
 
