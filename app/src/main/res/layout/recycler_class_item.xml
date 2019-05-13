@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:id="@+id/rootLayout"
-              android:orientation="horizontal"
-              android:padding="8dp"
-              android:layout_margin="10dp"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:layout_margin="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
   <ImageView
       android:id="@+id/avatarImageView"
@@ -21,7 +21,7 @@
       android:padding="5dp"
       android:orientation="vertical">
     <TextView
-        android:id="@+id/UserTextView"
+        android:id="@+id/coachTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="@tools:sample/full_names"
@@ -30,12 +30,12 @@
         android:layout_marginStart="8dp"
         android:layout_marginBottom="8dp" />
     <TextView
-        android:id="@+id/MsgTextView"
+        android:id="@+id/classTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="@tools:sample/lorem[3]" />
     <TextView
-        android:id="@+id/TimeTextView"
+        android:id="@+id/venueTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="@tools:sample/lorem[4]" />
@@ -54,12 +54,12 @@
       android:orientation="vertical">
 
     <TextView
-      android:id="@+id/rateTextView"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text=""
-      tools:layout_editor_absoluteX="16dp"
-      tools:layout_editor_absoluteY="4dp" />
+        android:id="@+id/rateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="4dp" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
