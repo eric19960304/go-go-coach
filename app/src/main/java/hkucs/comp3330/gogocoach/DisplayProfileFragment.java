@@ -53,23 +53,30 @@ public class DisplayProfileFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_display_profile, container, false);
 
         profileIcon = (ImageView) view.findViewById(R.id.profile_icon);
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
         // get args
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            // display other users
             userId = bundle.getString("userId");
             photoUrl = bundle.getString("photoUrl");
-            // can chat only
-            view.findViewById(R.id.edit_fab).setVisibility(View.GONE);
-            view.findViewById(R.id.message_fab).setVisibility(View.VISIBLE);
+            if(userId.equals(mFirebaseUser.getUid())){
+                // display self profile
+                // can edit, not chat
+                view.findViewById(R.id.edit_fab).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.message_fab).setVisibility(View.GONE);
+            }else{
+                // display others profile
+                // can chat, not edit
+                view.findViewById(R.id.edit_fab).setVisibility(View.GONE);
+                view.findViewById(R.id.message_fab).setVisibility(View.VISIBLE);
+            }
         }else{
             // display self profile
-            mFirebaseAuth = FirebaseAuth.getInstance();
-            mFirebaseUser = mFirebaseAuth.getCurrentUser();
             userId = mFirebaseUser.getUid();
             photoUrl = mFirebaseUser.getPhotoUrl().toString();
-            // can edit only
+            // can edit, not chat
             view.findViewById(R.id.edit_fab).setVisibility(View.VISIBLE);
             view.findViewById(R.id.message_fab).setVisibility(View.GONE);
         }

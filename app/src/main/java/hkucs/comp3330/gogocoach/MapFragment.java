@@ -114,7 +114,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                         for (DataSnapshot coachClassesSnapshot: coachesSnapshot.getChildren()) {
                             Classes c = (Classes) coachClassesSnapshot.getValue(Classes.class);
-                            (new DownloadAvatarTask()).execute(c);
+                            (new SetAvatarMarkerTask()).execute(c);
                         }
                     }
                 }
@@ -128,7 +128,37 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         });
     }
 
-    private class DownloadAvatarTask extends AsyncTask<Classes, Void, Bitmap> {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("myTest", "resultCode:"+resultCode);
+        if (resultCode == Activity.RESULT_OK) {
+
+            final String action = data.getExtras().getString("action");
+            Log.d("myTest", action);
+            if(action.equals(DetailClassActivity.ACTION_BROWSE_PROFILE)){
+                Log.d("myTest", "ACTION_BROWSE_PROFILE");
+                String userId = data.getExtras().getString("userId");
+                String photoUrl = data.getExtras().getString("photoUrl");
+
+                Fragment fragment = new DisplayProfileFragment();
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                Bundle bundle = new Bundle();
+                bundle.putString("userId", userId);
+                bundle.putString("photoUrl", photoUrl);
+                fragment.setArguments(bundle);
+                fragmentTransaction.replace(R.id.frame_layout, fragment);
+
+                fragmentTransaction.commit();
+            }
+            if(action.equals(DetailClassActivity.ACTION_BOOKING)){
+                final Classes classToBook = (Classes) data.getExtras().getSerializable("classToBook");
+                // TODO
+            }
+        }
+    }
+
+    private class SetAvatarMarkerTask extends AsyncTask<Classes, Void, Bitmap> {
 
         private Classes classes;
 
@@ -209,33 +239,4 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.d("myTest", "resultCode:"+resultCode);
-        if (resultCode == Activity.RESULT_OK) {
-
-            final String action = data.getExtras().getString("action");
-            Log.d("myTest", action);
-            if(action.equals(DetailClassActivity.ACTION_BROWSE_PROFILE)){
-                Log.d("myTest", "ACTION_BROWSE_PROFILE");
-                String userId = data.getExtras().getString("userId");
-                String photoUrl = data.getExtras().getString("photoUrl");
-
-                Fragment fragment = new DisplayProfileFragment();
-                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                Bundle bundle = new Bundle();
-                bundle.putString("userId", userId);
-                bundle.putString("photoUrl", photoUrl);
-                fragment.setArguments(bundle);
-                fragmentTransaction.replace(R.id.frame_layout, fragment);
-
-                fragmentTransaction.commit();
-            }
-            if(action.equals(DetailClassActivity.ACTION_BOOKING)){
-                final Classes classToBook = (Classes) data.getExtras().getSerializable("classToBook");
-                // TODO
-            }
-        }
-    }
 }
