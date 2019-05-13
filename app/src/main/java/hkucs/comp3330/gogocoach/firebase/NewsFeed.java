@@ -2,7 +2,7 @@ package hkucs.comp3330.gogocoach.firebase;
 
 import java.io.Serializable;
 
-public class NewsFeed implements Serializable {
+public class NewsFeed implements Serializable, Comparable< NewsFeed >  {
     public String topic;
     public String content;
     public String time;
@@ -20,6 +20,10 @@ public class NewsFeed implements Serializable {
         this.name= name;
         this.photoUrl= photoUrl;
 
+    }
+
+    public int compareTo(NewsFeed o) {
+        return o.time.compareTo(this.time);
     }
 
 }

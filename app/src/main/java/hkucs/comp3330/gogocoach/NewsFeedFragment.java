@@ -22,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import hkucs.comp3330.gogocoach.firebase.NewsFeed;
@@ -64,7 +65,7 @@ public class NewsFeedFragment extends Fragment {
 
                         }
                     }
-
+                    Collections.sort(newsArray);
                     NewsAdapter adapter = new NewsAdapter(view.getContext(), newsArray);
                     RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
                     recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
