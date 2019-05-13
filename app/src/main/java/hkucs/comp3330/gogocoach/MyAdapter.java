@@ -79,7 +79,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
                     ((InputStream) new URL(url).getContent());
             return bitmap;
         } catch(
-        Exception e)
+                Exception e)
 
         {
             e.printStackTrace();
@@ -117,10 +117,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
         public ViewHolder(View itemView) {
             super(itemView);
             avatarImageView = (ImageView) itemView.findViewById(R.id.avatarImageView);
-            coachTextView = (TextView) itemView.findViewById(R.id.UserTextView);
+            coachTextView = (TextView) itemView.findViewById(R.id.coachTextView);
             rateTextView = (TextView) itemView.findViewById(R.id.rateTextView);
-            classTextView = (TextView) itemView.findViewById(R.id.MsgTextView);
-            venueTextView = (TextView) itemView.findViewById(R.id.TimeTextView);
+            classTextView = (TextView) itemView.findViewById(R.id.classTextView);
+            venueTextView = (TextView) itemView.findViewById(R.id.venueTextView);
             dateTextView = (TextView) itemView.findViewById(R.id.dateTextView);
             detailTextView = (TextView) itemView.findViewById(R.id.detailTextView);
             rootLayout = (LinearLayout) itemView.findViewById(R.id.rootLayout);
