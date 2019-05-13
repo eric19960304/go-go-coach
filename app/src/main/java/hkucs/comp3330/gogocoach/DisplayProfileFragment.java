@@ -41,6 +41,7 @@ public class DisplayProfileFragment extends Fragment {
     private View view;
     private Profile currentProfile = new Profile();
     private String userId;
+    private String username;
     private ImageView profileIcon;
     private String photoUrl;
 
@@ -99,10 +100,11 @@ public class DisplayProfileFragment extends Fragment {
                 if(dataSnapshot.exists()){
                     Log.d("myTest", "profile exists");
                     currentProfile = dataSnapshot.getValue(Profile.class);
-
+                    username = currentProfile.name;
                     view.findViewById(R.id.loadingSpinner).setVisibility(View.GONE);
                     view.findViewById(R.id.profile_content_empty).setVisibility(View.GONE);
                     view.findViewById(R.id.profile_content).setVisibility(View.VISIBLE);
+
 
                     ((TextView) view.findViewById(R.id.available_class)).setText(currentProfile.sportTypes);
                     ((TextView) view.findViewById(R.id.bio)).setText(currentProfile.bio);
@@ -132,6 +134,7 @@ public class DisplayProfileFragment extends Fragment {
                 Fragment fragment = new ChatFragment();
                 Bundle arguments = new Bundle();
                 arguments.putString("receiver", userId);
+                arguments.putString("receiverName", username);
                 arguments.putString("receiverPhotoUrl", photoUrl);
                 fragment.setArguments(arguments);
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();

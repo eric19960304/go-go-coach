@@ -71,6 +71,7 @@ public class ChatFragment extends Fragment {
     private String mReceiverPhotoUrl;
     private String mUserId;
     private String mReceiverUserId;
+    private String mReceiverUserName;
     private Button mSendButton;
     private RecyclerView mMessageRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
@@ -136,15 +137,19 @@ public class ChatFragment extends Fragment {
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
         Bundle arguments = this.getArguments();
         mReceiverUserId = arguments.getString("receiver");
+        mReceiverUserName = arguments.getString("receiverName");
+        //ChatRoom ID Initialization
         MESSAGES_CHILD = uidCompareTo(mUserId, mReceiverUserId);
+
         mReceiverPhotoUrl = arguments.getString("receiverPhotoUrl");
         Log.d(TAG, "Open ChatFragment with receiverUid = "+mReceiverUserId);
         if (mFirebaseUser.getPhotoUrl() != null) {
             mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
         }
+        //ChatRoom Initialization
         mFirebaseDatabaseReference.child(UESRCHAT).child(MESSAGES_CHILD).child(mUserId).child("name").setValue(mUsername);
         mFirebaseDatabaseReference.child(UESRCHAT).child(MESSAGES_CHILD).child(mUserId).child("icon").setValue(mPhotoUrl);
-        mFirebaseDatabaseReference.child(UESRCHAT).child(MESSAGES_CHILD).child(mReceiverUserId).child("name").setValue("Test name 1");
+        mFirebaseDatabaseReference.child(UESRCHAT).child(MESSAGES_CHILD).child(mReceiverUserId).child("name").setValue(mReceiverUserName);
         mFirebaseDatabaseReference.child(UESRCHAT).child(MESSAGES_CHILD).child(mReceiverUserId).child("icon").setValue(mReceiverPhotoUrl);
         final View view = inflater.inflate(R.layout.fragment_chat, container, false);
         mMessageRecyclerView = (RecyclerView) view.findViewById(R.id.messageRecyclerView);
@@ -203,6 +208,7 @@ public class ChatFragment extends Fragment {
                 }
 
                 viewHolder.messengerTextView.setText(message.getText());
+                //Update last message logic
                 mFirebaseDatabaseReference.child(UESRCHAT).child(MESSAGES_CHILD).child("lastMessage").setValue(message.getText());
                 mFirebaseDatabaseReference.child(UESRCHAT).child(MESSAGES_CHILD).child("lastUpdate").setValue(message.getTime());
                 if (message.getPhotoUrl() == null) {
@@ -260,18 +266,20 @@ public class ChatFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // Send messages on click.
-                Message message = new
-                        Message(mMessageEditText.getText().toString(),
-                        mUsername,
-                        mPhotoUrl,
-                        null /* no image */,
-                        mUserId,
-                        dateFormat.format(new Date()));
-                mFirebaseDatabaseReference.child(UESRCHAT).child(MESSAGES_CHILD).child(MESSAGES)
-                        .push().setValue(message);
-
-
-                mMessageEditText.setText("");
+                if(mMessageEditText.getText().toString().replace(" ","").equals("")){
+                    //No content, do not send
+                }else{
+                    Message message = new
+                            Message(mMessageEditText.getText().toString(),
+                            mUsername,
+                            mPhotoUrl,
+                            null /* no image */,
+                            mUserId,
+                            dateFormat.format(new Date()));
+                    mFirebaseDatabaseReference.child(UESRCHAT).child(MESSAGES_CHILD).child(MESSAGES)
+                            .push().setValue(message);
+                    mMessageEditText.setText("");
+                }
             }
         });
 

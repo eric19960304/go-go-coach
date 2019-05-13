@@ -50,7 +50,7 @@ public class ChatListFragment extends Fragment {
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
+                // Get Chatroom object and use the values to update the UI
                 if(dataSnapshot.exists()){
                     //Log.d("classes database", "exists");
                     for (DataSnapshot c: dataSnapshot.getChildren()){
@@ -84,7 +84,7 @@ public class ChatListFragment extends Fragment {
                             Fragment fragment = new ChatFragment();
                             Bundle arguments = new Bundle();
                             arguments.putString("receiver", c.getUid());
-                            //arguments.putString("receiver", c.getName());
+                            arguments.putString("receiverName", c.getName());
                             arguments.putString("receiverPhotoUrl", c.getPhotoUrl());
                             fragment.setArguments(arguments);
                             FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
