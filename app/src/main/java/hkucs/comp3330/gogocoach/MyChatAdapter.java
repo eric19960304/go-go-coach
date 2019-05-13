@@ -16,27 +16,27 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 
-import hkucs.comp3330.gogocoach.firebase.Classes;
+import hkucs.comp3330.gogocoach.firebase.UserChatItem;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements View.OnClickListener{
+public class MyChatAdapter extends RecyclerView.Adapter<MyChatAdapter.ViewHolder> implements View.OnClickListener{
 
     private OnItemClickListener mOnItemClickListener = null;
 
     public interface OnItemClickListener {
-        void onItemClick(View view , Classes c);
+        void onItemClick(View view, UserChatItem c);
     }
 
     private Context mContext;
-    private ArrayList<Classes> mData;
+    private ArrayList<UserChatItem> UserChatItems;
 
-    public MyAdapter(Context context, ArrayList<Classes> classesData) {
+    public MyChatAdapter(Context context, ArrayList<UserChatItem> UserChatItems) {
         this.mContext = context;
-        this.mData = classesData;
+        this.UserChatItems = UserChatItems;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.recycler_class_item, null); //parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.recycler_chat_item, null); //parent, false);
         ViewHolder holder = new ViewHolder(view);
 
         view.setOnClickListener(this);
@@ -45,17 +45,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        holder.rateTextView.setText("$" + mData.get(position).price);
-        holder.venueTextView.setText("Location: " + mData.get(position).location);
-        holder.dateTextView.setText("DateTime: "+ mData.get(position).time);
-        holder.coachTextView.setText(mData.get(position).className);
-        holder.classTextView.setText(mData.get(position).name);
+        final UserChatItem mData = UserChatItems.get(position);
+
+        holder.UserTextView.setText(mData.getName());
+        holder.MsgTextView.setText(mData.getlastMessage());
+        holder.TimeTextView.setText(mData.getTime());
         holder.itemView.setTag(mData);
         final ViewHolder _holder = holder;
         (new Thread(new Runnable(){
             @Override
             public void run() {
-                final Bitmap avatar = loadImageFromNetwork(mData.get(position).photoUrl);
+                final Bitmap avatar = loadImageFromNetwork(mData.getPhotoUrl());
                 _holder.avatarImageView.post(new Runnable(){
                     @Override
                     public void run() {
@@ -68,7 +68,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
         holder.rootLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnItemClickListener.onItemClick(v, mData.get(_position));
+                mOnItemClickListener.onItemClick(v, UserChatItems.get(_position));
             }
         });
     }
@@ -89,13 +89,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        return UserChatItems.size();
     }
 
     @Override
     public void onClick(View v) {
         if (mOnItemClickListener != null) {
-            mOnItemClickListener.onItemClick(v, (Classes) v.getTag());
+            mOnItemClickListener.onItemClick(v, (UserChatItem) v.getTag());
         }
     }
 
@@ -106,24 +106,18 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
     class ViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView avatarImageView;
-        public TextView coachTextView;
-        public TextView rateTextView;
-        public TextView classTextView;
-        public TextView venueTextView;
-        public TextView dateTextView;
-        public TextView detailTextView;
+        public TextView UserTextView;
+        public TextView MsgTextView;
+        public TextView TimeTextView;
         public LinearLayout rootLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
             avatarImageView = (ImageView) itemView.findViewById(R.id.avatarImageView);
-            coachTextView = (TextView) itemView.findViewById(R.id.UserTextView);
-            rateTextView = (TextView) itemView.findViewById(R.id.rateTextView);
-            classTextView = (TextView) itemView.findViewById(R.id.MsgTextView);
-            venueTextView = (TextView) itemView.findViewById(R.id.TimeTextView);
-            dateTextView = (TextView) itemView.findViewById(R.id.dateTextView);
-            detailTextView = (TextView) itemView.findViewById(R.id.detailTextView);
-            rootLayout = (LinearLayout) itemView.findViewById(R.id.rootLayout);
+            UserTextView = (TextView) itemView.findViewById(R.id.UserTextView);
+            MsgTextView = (TextView) itemView.findViewById(R.id.MsgTextView);
+            TimeTextView = (TextView) itemView.findViewById(R.id.TimeTextView);
+            rootLayout = (LinearLayout) itemView.findViewById(R.id.rootLayout2);
         }
     }
 }

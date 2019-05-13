@@ -21,7 +21,7 @@
       android:padding="5dp"
       android:orientation="vertical">
     <TextView
-        android:id="@+id/coachTextView"
+        android:id="@+id/UserTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="@tools:sample/full_names"
@@ -30,12 +30,12 @@
         android:layout_marginStart="8dp"
         android:layout_marginBottom="8dp" />
     <TextView
-        android:id="@+id/classTextView"
+        android:id="@+id/MsgTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="@tools:sample/lorem[3]" />
     <TextView
-        android:id="@+id/venueTextView"
+        android:id="@+id/TimeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="@tools:sample/lorem[4]" />
