@@ -34,7 +34,6 @@ import com.google.firebase.storage.StorageReference;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -59,14 +58,20 @@ public class ChatFragment extends Fragment {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private static final String TAG = "ChatFragment";
-    public static final String MESSAGES_CHILD = "messages";
+    public String UESRCHAT = "userChat";
+    public String MESSAGES_CHILD;
+    public String MESSAGES = "messages";
+    public DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     private static final int REQUEST_IMAGE = 2;
     private static final int VIEW_TYPE_MESSAGE_SENT = 1;
     private static final int VIEW_TYPE_MESSAGE_RECEIVED = 2;
     private static final String LOADING_IMAGE_URL = "https://www.google.com/images/spin-32.gif";
     private String mUsername;
     private String mPhotoUrl;
+    private String mReceiverPhotoUrl;
     private String mUserId;
+    private String mReceiverUserId;
+    private String mReceiverUserName;
     private Button mSendButton;
     private RecyclerView mMessageRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
@@ -77,12 +82,11 @@ public class ChatFragment extends Fragment {
             mFirebaseAdapter;
 
 
-    public static String getCurrentTimeUsingCalendar() {
-        Calendar cal = Calendar.getInstance();
-        Date date=cal.getTime();
-        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        String formattedDate=dateFormat.format(date);
-        return formattedDate;
+    public static String uidCompareTo(String uid1, String uid2){
+        if(uid1.compareTo(uid2) >= 0){
+            return uid1+uid2;
+        }
+        return uid2+uid1;
     }
 
     @Override
@@ -97,8 +101,8 @@ public class ChatFragment extends Fragment {
                     Log.d(TAG, "Uri: " + uri.toString());
 
                     Message tempMessage = new Message(null, mUsername, mPhotoUrl,
-                            LOADING_IMAGE_URL, mUserId, getCurrentTimeUsingCalendar());
-                    mFirebaseDatabaseReference.child(MESSAGES_CHILD).push()
+                            LOADING_IMAGE_URL, mUserId, dateFormat.format(new Date()));
+                    mFirebaseDatabaseReference.child(UESRCHAT).child(MESSAGES_CHILD).child(MESSAGES).push()
                             .setValue(tempMessage, new DatabaseReference.CompletionListener() {
                                 @Override
                                 public void onComplete(DatabaseError databaseError,
@@ -126,23 +130,34 @@ public class ChatFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         mUsername = mFirebaseUser.getDisplayName();
         mUserId = mFirebaseUser.getUid();
+        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
+        Bundle arguments = this.getArguments();
+        mReceiverUserId = arguments.getString("receiver");
+        mReceiverUserName = arguments.getString("receiverName");
+        //ChatRoom ID Initialization
+        MESSAGES_CHILD = uidCompareTo(mUserId, mReceiverUserId);
+
+        mReceiverPhotoUrl = arguments.getString("receiverPhotoUrl");
+        Log.d(TAG, "Open ChatFragment with receiverUid = "+mReceiverUserId);
         if (mFirebaseUser.getPhotoUrl() != null) {
             mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
         }
-        final View view =  inflater.inflate(R.layout.fragment_chat, container, false);
-
+        //ChatRoom Initialization
+        mFirebaseDatabaseReference.child(UESRCHAT).child(MESSAGES_CHILD).child(mUserId).child("name").setValue(mUsername);
+        mFirebaseDatabaseReference.child(UESRCHAT).child(MESSAGES_CHILD).child(mUserId).child("icon").setValue(mPhotoUrl);
+        mFirebaseDatabaseReference.child(UESRCHAT).child(MESSAGES_CHILD).child(mReceiverUserId).child("name").setValue(mReceiverUserName);
+        mFirebaseDatabaseReference.child(UESRCHAT).child(MESSAGES_CHILD).child(mReceiverUserId).child("icon").setValue(mReceiverPhotoUrl);
+        final View view = inflater.inflate(R.layout.fragment_chat, container, false);
         mMessageRecyclerView = (RecyclerView) view.findViewById(R.id.messageRecyclerView);
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mLinearLayoutManager.setStackFromEnd(true);
         mMessageRecyclerView.setLayoutManager(mLinearLayoutManager);
 
         // New child entries
-        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
         SnapshotParser<Message> parser = new SnapshotParser<Message>() {
             @Override
             public Message parseSnapshot(DataSnapshot dataSnapshot) {
@@ -153,8 +168,8 @@ public class ChatFragment extends Fragment {
                 return message;
             }
         };
-
-        DatabaseReference messagesRef = mFirebaseDatabaseReference.child(MESSAGES_CHILD);
+        DatabaseReference messagesRef = mFirebaseDatabaseReference.child(UESRCHAT).child(MESSAGES_CHILD).child(MESSAGES);
+        //DatabaseReference messagesRef = mFirebaseDatabaseReference.child(MESSAGES_CHILD);
         FirebaseRecyclerOptions<Message> options =
                 new FirebaseRecyclerOptions.Builder<Message>()
                         .setQuery(messagesRef, parser)
@@ -183,7 +198,7 @@ public class ChatFragment extends Fragment {
             protected void onBindViewHolder(final MessageViewHolder viewHolder,
                                             int position,
                                             Message message) {
-                if (message.getText() != null) {
+                if (message.getName() != null) {
                     viewHolder.messageTextView.setText(message.getName());
                     viewHolder.messageTextView.setVisibility(TextView.VISIBLE);
                 }
@@ -193,6 +208,9 @@ public class ChatFragment extends Fragment {
                 }
 
                 viewHolder.messengerTextView.setText(message.getText());
+                //Update last message logic
+                mFirebaseDatabaseReference.child(UESRCHAT).child(MESSAGES_CHILD).child("lastMessage").setValue(message.getText());
+                mFirebaseDatabaseReference.child(UESRCHAT).child(MESSAGES_CHILD).child("lastUpdate").setValue(message.getTime());
                 if (message.getPhotoUrl() == null) {
                     viewHolder.messengerImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(),
                             R.drawable.ic_account_circle_black_36dp));
@@ -240,24 +258,28 @@ public class ChatFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
+
             }
         });
-
         mSendButton = (Button) view.findViewById(R.id.sendButton);
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Send messages on click.
-                Message message = new
-                        Message(mMessageEditText.getText().toString(),
-                        mUsername,
-                        mPhotoUrl,
-                        null /* no image */,
-                        mUserId,
-                        getCurrentTimeUsingCalendar());
-                mFirebaseDatabaseReference.child(MESSAGES_CHILD)
-                        .push().setValue(message);
-                mMessageEditText.setText("");
+                if(mMessageEditText.getText().toString().replace(" ","").equals("")){
+                    //No content, do not send
+                }else{
+                    Message message = new
+                            Message(mMessageEditText.getText().toString(),
+                            mUsername,
+                            mPhotoUrl,
+                            null /* no image */,
+                            mUserId,
+                            dateFormat.format(new Date()));
+                    mFirebaseDatabaseReference.child(UESRCHAT).child(MESSAGES_CHILD).child(MESSAGES)
+                            .push().setValue(message);
+                    mMessageEditText.setText("");
+                }
             }
         });
 

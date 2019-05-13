@@ -9,15 +9,15 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,6 +41,7 @@ public class DisplayProfileFragment extends Fragment {
     private View view;
     private Profile currentProfile = new Profile();
     private String userId;
+    private String username;
     private ImageView profileIcon;
     private String photoUrl;
 
@@ -106,10 +107,11 @@ public class DisplayProfileFragment extends Fragment {
                 if(dataSnapshot.exists()){
                     Log.d("myTest", "profile exists");
                     currentProfile = dataSnapshot.getValue(Profile.class);
-
+                    username = currentProfile.name;
                     view.findViewById(R.id.loadingSpinner).setVisibility(View.GONE);
                     view.findViewById(R.id.profile_content_empty).setVisibility(View.GONE);
                     view.findViewById(R.id.profile_content).setVisibility(View.VISIBLE);
+
 
                     ((TextView) view.findViewById(R.id.available_class)).setText(currentProfile.sportTypes);
                     ((TextView) view.findViewById(R.id.bio)).setText(currentProfile.bio);
@@ -137,7 +139,11 @@ public class DisplayProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Fragment fragment = new ChatFragment();
-
+                Bundle arguments = new Bundle();
+                arguments.putString("receiver", userId);
+                arguments.putString("receiverName", username);
+                arguments.putString("receiverPhotoUrl", photoUrl);
+                fragment.setArguments(arguments);
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.frame_layout, fragment);
                 fragmentTransaction.commit();
