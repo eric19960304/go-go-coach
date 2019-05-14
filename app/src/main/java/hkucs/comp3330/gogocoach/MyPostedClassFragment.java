@@ -43,7 +43,7 @@ public class MyPostedClassFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         DatabaseReference ref = mDatabase.child("classes").child(mFirebaseUser.getUid());
 
-        view = inflater.inflate(R.layout.fragment_class_list, container, false);
+        view = inflater.inflate(R.layout.fragment_my_class_list, container, false);
 
         classesArray = new ArrayList<Classes>();
 
