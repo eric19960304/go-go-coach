@@ -195,6 +195,21 @@ public class DisplayProfileFragment extends Fragment {
             }
         });
 
+        FloatingActionButton posted_class_fab = view.findViewById(R.id.posted_class_fab);
+        posted_class_fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = new MyPostedClassFragment();
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                Bundle bundle = new Bundle();
+                bundle.putString("userId", userId);
+                fragment.setArguments(bundle);
+                fragmentTransaction.replace(R.id.frame_layout, fragment);
+
+                fragmentTransaction.commit();
+            }
+        });
+
         return view;
     }
 

@@ -41,7 +41,18 @@ public class MyPostedClassFragment extends Fragment {
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference ref = mDatabase.child("classes").child(mFirebaseUser.getUid());
+
+        String userId = "";
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            // others user classes
+            userId = bundle.getString("userId");
+        }else{
+            // self classes
+            userId = mFirebaseUser.getUid();
+        }
+
+        DatabaseReference ref = mDatabase.child("classes").child(userId);
 
         view = inflater.inflate(R.layout.fragment_my_class_list, container, false);
 
@@ -53,9 +64,6 @@ public class MyPostedClassFragment extends Fragment {
                 // Get Post object and use the values to update the UI
                 if(dataSnapshot.exists()){
 
-
-
-
                         for (DataSnapshot coachClassesSnapshot: dataSnapshot.getChildren()) {
                             Log.d("coachClassesSnapshot", "exists");
                             Classes c = (Classes) coachClassesSnapshot.getValue(Classes.class);
@@ -63,7 +71,6 @@ public class MyPostedClassFragment extends Fragment {
 
                             classesArray.add(c);
                         }
-
 
                     MyAdapter adapter = new MyAdapter(view.getContext(), classesArray);
 
