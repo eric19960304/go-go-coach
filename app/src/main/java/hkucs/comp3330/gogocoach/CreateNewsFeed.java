@@ -34,6 +34,13 @@ public class CreateNewsFeed extends  Fragment {
     private EditText content;
     private View view;
 
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        ((MainActivity) getActivity()).setActionBarTitle("Post News Feed");
+    }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mFirebaseAuth = FirebaseAuth.getInstance();

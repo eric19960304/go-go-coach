@@ -35,6 +35,13 @@ public class MyPostedClassFragment extends Fragment {
     private ArrayList<Classes> classesArray;
 
     @Override
+    public void onResume(){
+        super.onResume();
+
+        ((MainActivity) getActivity()).setActionBarTitle("Posted Classes");
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 

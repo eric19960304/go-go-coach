@@ -46,6 +46,13 @@ public class DisplayProfileFragment extends Fragment {
     private String photoUrl;
 
     @Override
+    public void onResume(){
+        super.onResume();
+
+        ((MainActivity) getActivity()).setActionBarTitle("Profile");
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 

@@ -357,6 +357,9 @@ public class ChatFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        ((MainActivity) getActivity()).setActionBarTitle("Chat with "+mReceiverUserName);
+
         mFirebaseAdapter.startListening();
     }
 }

@@ -21,6 +21,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private FirebaseUser mFirebaseUser;
     private String userId;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +32,8 @@ public class EditProfileActivity extends AppCompatActivity {
         userId = getIntent().getStringExtra("userId");
         mDatabase = FirebaseDatabase.getInstance().getReference();
         profileRef = mDatabase.child("profile").child(userId);
+
+        getSupportActionBar().setTitle("Edit Profile");
 
         Profile currentProfile = (Profile) getIntent().getSerializableExtra("currentProfile");
         if(currentProfile.name!=null){
