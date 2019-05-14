@@ -155,6 +155,7 @@ public class PostClassFragment extends Fragment {
                 type.setText("");
                 time.setText("");
                 price.setText("");
+                location.setText("Location");
             }
         });
 
