@@ -88,6 +88,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         return view;
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        ((MainActivity) getActivity()).setActionBarTitle("Map Search");
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {

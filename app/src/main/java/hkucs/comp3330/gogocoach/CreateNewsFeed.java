@@ -55,6 +55,7 @@ public class CreateNewsFeed extends  Fragment {
     private EditText content;
     private View view;
 
+
     private Button btnChoose;
     private ImageView imageView;
     private Uri filePath;
@@ -64,6 +65,14 @@ public class CreateNewsFeed extends  Fragment {
     StorageReference storageReference;
     private Map<String, Object> newsData = new HashMap<>();
     private final int PICK_IMAGE_REQUEST = 71;
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        ((MainActivity) getActivity()).setActionBarTitle("Post News Feed");
+    }
+
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

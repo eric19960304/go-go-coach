@@ -52,6 +52,13 @@ public class PostClassFragment extends Fragment {
     private DatabaseReference mRootRef;
 
     @Override
+    public void onResume(){
+        super.onResume();
+
+        ((MainActivity) getActivity()).setActionBarTitle("Post Class");
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment

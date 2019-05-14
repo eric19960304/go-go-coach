@@ -42,6 +42,7 @@ public class DetailClassActivity extends AppCompatActivity {
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mRootRef;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +65,8 @@ public class DetailClassActivity extends AppCompatActivity {
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         mRootRef = FirebaseDatabase.getInstance().getReference();
         Log.d("hi","running");
+
+        getSupportActionBar().setTitle("Class Details");
 
 
         FloatingActionButton profile_fab = findViewById(R.id.profile_fab);

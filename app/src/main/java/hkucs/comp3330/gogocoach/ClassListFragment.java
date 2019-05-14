@@ -35,6 +35,13 @@ public class ClassListFragment extends Fragment {
     private ArrayList<Classes> classesArray;
 
     @Override
+    public void onResume(){
+        super.onResume();
+
+        ((MainActivity) getActivity()).setActionBarTitle("Classes List");
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 

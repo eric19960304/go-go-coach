@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +57,7 @@ public class MyChatAdapter extends RecyclerView.Adapter<MyChatAdapter.ViewHolder
         holder.MsgTextView.setText(mData.getlastMessage());
         holder.TimeTextView.setText(mData.getTime());
         holder.itemView.setTag(mData);
+        
         final ViewHolder _holder = holder;
         (new Thread(new Runnable(){
             @Override

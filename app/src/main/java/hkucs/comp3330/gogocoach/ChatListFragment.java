@@ -36,6 +36,13 @@ public class ChatListFragment extends Fragment {
     private ArrayList<UserChatItem> chatArray;
 
     @Override
+    public void onResume(){
+        super.onResume();
+
+        ((MainActivity) getActivity()).setActionBarTitle("Chat History");
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 

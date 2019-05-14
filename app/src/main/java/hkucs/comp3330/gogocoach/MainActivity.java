@@ -35,6 +35,10 @@ public class MainActivity extends AppCompatActivity
     private FirebaseUser mFirebaseUser;
     private GoogleApiClient mGoogleApiClient;
 
+    public void setActionBarTitle(String title) {
+        getSupportActionBar().setTitle(title);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

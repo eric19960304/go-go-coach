@@ -46,6 +46,13 @@ public class DisplayProfileFragment extends Fragment {
     private String photoUrl;
 
     @Override
+    public void onResume(){
+        super.onResume();
+
+        ((MainActivity) getActivity()).setActionBarTitle("Profile");
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -192,6 +199,21 @@ public class DisplayProfileFragment extends Fragment {
                 intent.putExtra("currentProfile", currentProfile);
                 intent.putExtra("userId", userId);
                 startActivity(intent);
+            }
+        });
+
+        FloatingActionButton posted_class_fab = view.findViewById(R.id.posted_class_fab);
+        posted_class_fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = new MyPostedClassFragment();
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                Bundle bundle = new Bundle();
+                bundle.putString("userId", userId);
+                fragment.setArguments(bundle);
+                fragmentTransaction.replace(R.id.frame_layout, fragment);
+
+                fragmentTransaction.commit();
             }
         });
 
