@@ -76,9 +76,28 @@ public class MyPostedClassFragment extends Fragment {
                         public void onItemClick(View view , Classes c){
                             //Log.d("position: ", String.valueOf(position));
 
-                            Intent intent = new Intent(getActivity(), DetailClassActivity.class);
-                            intent.putExtra("classes", c);
-                            startActivityForResult(intent, 1);
+                            Fragment fragment = new EditClass();
+                            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                            Bundle bundle = new Bundle();
+
+                            bundle.putString("classNameID", c.className);
+                            bundle.putString("classdescription", c.description);
+                            bundle.putString("classid", c.id);
+                            bundle.putString("classlocation", c.location);
+                            bundle.putString("classname", c.name);
+                            bundle.putString("classnumber", c.number);
+                            bundle.putString("classphotoUrl", c.photoUrl);
+                            bundle.putString("classprice", c.price);
+                            bundle.putString("classtime", c.time);
+                            bundle.putString("classtype", c.type);
+                            bundle.putDouble("classlatitude", c.latitude);
+                            bundle.putDouble("classlongitude", c.longitude);
+                            fragment.setArguments(bundle);
+                            fragmentTransaction.replace(R.id.frame_layout, fragment);
+
+                            fragmentTransaction.commit();
+
+
                         }
                     });
 
