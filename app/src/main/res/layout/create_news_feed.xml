@@ -45,6 +45,17 @@
                 android:layout_height="wrap_content"
                 android:ems="5"
                 android:inputType="text" />
+            <Button
+                android:id="@+id/btnChoose"
+                android:text="Upload a picture"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:id="@+id/newsImage"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                tools:src="@tools:sample/avatars"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

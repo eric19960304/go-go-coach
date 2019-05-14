@@ -62,6 +62,13 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> im
                         _holder.avatarImageView.setImageBitmap(avatar);
                     }
                 });
+                final Bitmap image = loadImageFromNetwork(mData.get(position).imageUrl);
+                _holder.newsImage.post(new Runnable(){
+                    @Override
+                    public void run() {
+                        _holder.newsImage.setImageBitmap(image);
+                    }
+                });
             }
         })).start();
         final int _position = position;
@@ -108,11 +115,13 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> im
         public TextView topicTextView;
         public TextView contentTextView;
         public TextView dateTextView;
+        public ImageView newsImage;
         public LinearLayout rootLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
             avatarImageView = (ImageView) itemView.findViewById(R.id.avatarImageView);
+            newsImage = (ImageView) itemView.findViewById(R.id.newsImage);
             topicTextView = (TextView) itemView.findViewById(R.id.topicTextView);
             contentTextView = (TextView) itemView.findViewById(R.id.contentTextView);
             dateTextView = (TextView) itemView.findViewById(R.id.dateTextView);

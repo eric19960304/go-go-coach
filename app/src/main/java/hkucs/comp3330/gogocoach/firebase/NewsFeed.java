@@ -9,17 +9,18 @@ public class NewsFeed implements Serializable, Comparable< NewsFeed >  {
     public String id;
     public String name;
     public String photoUrl;
+    public String imageUrl;
 
     public NewsFeed(){}
 
-    public NewsFeed(String topic,String content,String time, String id, String name , String photoUrl){
+    public NewsFeed(String topic,String content,String time, String id, String name , String photoUrl, String imageUrl){
         this.topic =topic;
         this.content = content;
         this.time= time;
         this.id = id;
         this.name= name;
         this.photoUrl= photoUrl;
-
+        this.imageUrl= imageUrl;
     }
 
     public int compareTo(NewsFeed o) {

@@ -34,6 +34,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="@tools:sample/lorem[3]" />
+        <ImageView
+            android:id="@+id/newsImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:src="@tools:sample/avatars"/>
         <TextView
             android:id="@+id/dateTextView"
             android:layout_width="wrap_content"
