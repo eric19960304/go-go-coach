@@ -112,7 +112,7 @@ public class DisplayProfileFragment extends Fragment {
                     view.findViewById(R.id.profile_content_empty).setVisibility(View.GONE);
                     view.findViewById(R.id.profile_content).setVisibility(View.VISIBLE);
 
-
+                    ((TextView) view.findViewById(R.id.coach_name)).setText(username);
                     ((TextView) view.findViewById(R.id.available_class)).setText(currentProfile.sportTypes);
                     ((TextView) view.findViewById(R.id.bio)).setText(currentProfile.bio);
                     ((TextView) view.findViewById(R.id.contact_number)).setText(currentProfile.contactNumber);
