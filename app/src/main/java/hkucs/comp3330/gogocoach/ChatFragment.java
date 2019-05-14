@@ -210,9 +210,6 @@ public class ChatFragment extends Fragment {
                 }
 
                 viewHolder.messengerTextView.setText(message.getText());
-                //Update last message logic
-                mFirebaseDatabaseReference.child(UESRCHAT).child(MESSAGES_CHILD).child("lastMessage").setValue(message.getText());
-                mFirebaseDatabaseReference.child(UESRCHAT).child(MESSAGES_CHILD).child("lastUpdate").setValue(message.getTime());
                 if (message.getPhotoUrl() == null) {
                     viewHolder.messengerImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(),
                             R.drawable.ic_account_circle_black_36dp));
@@ -280,6 +277,9 @@ public class ChatFragment extends Fragment {
                             dateFormat.format(new Date()));
                     mFirebaseDatabaseReference.child(UESRCHAT).child(MESSAGES_CHILD).child(MESSAGES)
                             .push().setValue(message);
+                    //Update last message logic
+                    mFirebaseDatabaseReference.child(UESRCHAT).child(MESSAGES_CHILD).child("lastMessage").setValue(message.getText());
+                    mFirebaseDatabaseReference.child(UESRCHAT).child(MESSAGES_CHILD).child("lastUpdate").setValue(message.getTime());
                     mMessageEditText.setText("");
                 }
             }
