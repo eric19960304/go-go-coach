@@ -33,6 +33,9 @@ public class EditProfileActivity extends AppCompatActivity {
         profileRef = mDatabase.child("profile").child(userId);
 
         Profile currentProfile = (Profile) getIntent().getSerializableExtra("currentProfile");
+        if(currentProfile.name!=null){
+            ((TextView) findViewById(R.id.usernameInput)).setText(currentProfile.name);
+        }
         if(currentProfile.sportTypes!=null){
             ((TextView) findViewById(R.id.sportTypesInput)).setText(currentProfile.sportTypes);
         }
@@ -50,10 +53,9 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String sportTypes = ((TextView) findViewById(R.id.sportTypesInput)).getText().toString();
                 String bio = ((TextView) findViewById(R.id.bioInput)).getText().toString();
-                String name = mFirebaseUser.getDisplayName();
+                String name = ((TextView) findViewById(R.id.usernameInput)).getText().toString();
                 String email = ((TextView) findViewById(R.id.emailInput)).getText().toString();
                 String contact = ((TextView) findViewById(R.id.contactNumberInput)).getText().toString();
-
                 profileRef.setValue(new Profile(sportTypes, bio, name, email, contact));
 
                 finish();
