@@ -138,15 +138,49 @@ public class DisplayProfileFragment extends Fragment {
         message_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment fragment = new ChatFragment();
-                Bundle arguments = new Bundle();
-                arguments.putString("receiver", userId);
-                arguments.putString("receiverName", username);
-                arguments.putString("receiverPhotoUrl", photoUrl);
-                fragment.setArguments(arguments);
-                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frame_layout, fragment);
-                fragmentTransaction.commit();
+                ValueEventListener profileForChatListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // Get Post object and use the values to update the UI
+                        Bundle arguments = new Bundle();
+                        if(dataSnapshot.exists()){
+                            boolean rec = false;
+                            boolean sen = false;
+                            for (DataSnapshot c: dataSnapshot.getChildren()){
+                                if(!rec && c.getKey().equals(userId)){ // Receiver logic
+                                    Profile pr = c.getValue(Profile.class);
+                                    arguments.putString("receiver", userId);
+                                    arguments.putString("receiverName", pr.name);
+                                    arguments.putString("receiverPhotoUrl", pr.photourl);
+                                    rec = true;
+
+                                }else if(!sen && c.getKey().equals(mFirebaseUser.getUid())) { // Sender logic
+                                    Profile ps = c.getValue(Profile.class);
+                                    //arguments.putString("sender", userId);
+                                    arguments.putString("senderName", ps.name);
+                                    arguments.putString("senderPhotoUrl", ps.photourl);
+                                }
+                                if(rec && sen){
+                                    break;
+                                }
+                            }
+                            Fragment fragment = new ChatFragment();
+                            fragment.setArguments(arguments);
+                            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.frame_layout, fragment);
+                            fragmentTransaction.commit();
+                        }else{
+                            Log.d("myTest", "profile not exists");
+                        }
+
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Getting data failed, log a message
+                        Log.d("myTest", "loadPost:onCancelled", databaseError.toException());
+                    }
+                };
+                mDatabase.child("profile").addValueEventListener(profileForChatListener);
             }
         });
 
