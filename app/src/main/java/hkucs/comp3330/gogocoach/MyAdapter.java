@@ -46,7 +46,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.rateTextView.setText("$" + mData.get(position).price);
-        holder.venueTextView.setText("Location: " + mData.get(position).location);
+        holder.venueTextView.setText("" + mData.get(position).location);
         holder.dateTextView.setText("DateTime: "+ mData.get(position).time);
         holder.coachTextView.setText(mData.get(position).className);
         holder.classTextView.setText(mData.get(position).name);
