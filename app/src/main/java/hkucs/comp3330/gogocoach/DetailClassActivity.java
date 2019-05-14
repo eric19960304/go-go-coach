@@ -10,18 +10,26 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import hkucs.comp3330.gogocoach.firebase.Classes;
 
@@ -30,6 +38,9 @@ public class DetailClassActivity extends AppCompatActivity {
     private ImageView avatarImageView;
     static public String ACTION_BROWSE_PROFILE = "browseProfile";
     static public String ACTION_BOOKING = "book";
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
+    private DatabaseReference mRootRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +60,12 @@ public class DetailClassActivity extends AppCompatActivity {
         desc.setText(c.description);
         TextView price = findViewById(R.id.price);
         price.setText("$"+c.price);
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        mRootRef = FirebaseDatabase.getInstance().getReference();
+        Log.d("hi","running");
+
+
         FloatingActionButton profile_fab = findViewById(R.id.profile_fab);
 
         final String userId = c.id;
@@ -70,6 +87,16 @@ public class DetailClassActivity extends AppCompatActivity {
         booking_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String currentUserId=mFirebaseUser.getUid();
+                String name=mFirebaseUser.getDisplayName();
+                Map<String, String> data = new HashMap<>();
+                data.put(currentUserId, name);
+                mRootRef.child("classes").child(userId).child(classToBook.className).child("students").push().setValue(data);
+                Map<String, String> data1 = new HashMap<>();
+                data1.put("className", classToBook.className);
+                data1.put("coachId", classToBook.id);
+                mRootRef.child("profile").child(currentUserId).child("class").push().setValue(data1);
+                Toast.makeText(view.getContext(), "Class is booked.", Toast.LENGTH_LONG).show();
                 Intent i = new Intent();
                 i.putExtra("action", ACTION_BOOKING);
                 i.putExtra("classToBook", classToBook);
