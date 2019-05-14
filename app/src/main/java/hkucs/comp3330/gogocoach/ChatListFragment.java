@@ -61,13 +61,15 @@ public class ChatListFragment extends Fragment {
                             //Log.d(TAG, "receiverId: "+receiverId);
                             String receiverName = c.child(receiverId).child("name").getValue(String.class);
                             //Log.d(TAG, "receiverName: "+receiverName);
+                            String senderName = c.child(mUserId).child("name").getValue(String.class);
+                            String senderPhotoUrl = c.child(mUserId).child("icon").getValue(String.class);
                             String receiverPhotoUrl = c.child(receiverId).child("icon").getValue(String.class);
                             //Log.d(TAG, "receiverPhotoUrl: "+receiverPhotoUrl);
                             String lastMessage = c.child("lastMessage").getValue(String.class);
                             //Log.d(TAG, "lastMessage: "+lastMessage);
                             String lastUpdate = c.child("lastUpdate").getValue(String.class);
                             //Log.d(TAG, "lastUpdate: "+lastUpdate);
-                            UserChatItem uci = new UserChatItem(receiverId, receiverName, receiverPhotoUrl, lastMessage, lastUpdate);
+                            UserChatItem uci = new UserChatItem(receiverId, receiverName, senderName, senderPhotoUrl, receiverPhotoUrl, lastMessage, lastUpdate);
                             chatArray.add(uci);
                         } //chatArray.add(c.child(mUserId).getValue(String.class));
                     }
@@ -86,6 +88,8 @@ public class ChatListFragment extends Fragment {
                             arguments.putString("receiver", c.getUid());
                             arguments.putString("receiverName", c.getName());
                             arguments.putString("receiverPhotoUrl", c.getPhotoUrl());
+                            arguments.putString("senderName", c.getSender());
+                            arguments.putString("senderPhotoUrl", c.getSenderPhotoUrl());
                             fragment.setArguments(arguments);
                             FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                             fragmentTransaction.replace(R.id.frame_layout, fragment);
