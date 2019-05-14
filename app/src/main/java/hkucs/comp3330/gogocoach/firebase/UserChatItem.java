@@ -19,6 +19,8 @@ public class UserChatItem {
 
     private String uid;
     private String name;
+    private String sender;
+    private String senderPhotoUrl;
     private String photoUrl;
     private String lastMessage;
     private String time;
@@ -27,9 +29,11 @@ public class UserChatItem {
     public UserChatItem() {
     }
 
-    public UserChatItem(String uid, String name, String photoUrl, String lastMessage, String time) {
+    public UserChatItem(String uid, String name, String sender, String senderPhotoUrl, String photoUrl, String lastMessage, String time) {
         this.uid = uid;
         this.name = name;
+        this.sender = sender;
+        this.senderPhotoUrl = senderPhotoUrl;
         this.time = time;
         this.photoUrl = photoUrl;
         this.lastMessage = lastMessage;
@@ -40,6 +44,10 @@ public class UserChatItem {
     }
 
     public String getName() {return name;}
+
+    public String getSender() {return sender;}
+
+    public String getSenderPhotoUrl() {return senderPhotoUrl;}
 
     public String getPhotoUrl() {return photoUrl;}
 

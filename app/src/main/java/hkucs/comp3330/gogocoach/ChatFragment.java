@@ -130,21 +130,23 @@ public class ChatFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Bundle arguments = this.getArguments();
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        mUsername = mFirebaseUser.getDisplayName();
+        mUsername = arguments.getString("senderName");
         mUserId = mFirebaseUser.getUid();
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
-        Bundle arguments = this.getArguments();
         mReceiverUserId = arguments.getString("receiver");
         mReceiverUserName = arguments.getString("receiverName");
         //ChatRoom ID Initialization
         MESSAGES_CHILD = uidCompareTo(mUserId, mReceiverUserId);
-
         mReceiverPhotoUrl = arguments.getString("receiverPhotoUrl");
         Log.d(TAG, "Open ChatFragment with receiverUid = "+mReceiverUserId);
         if (mFirebaseUser.getPhotoUrl() != null) {
             mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
+        }
+        if (arguments.getString("senderPhotoUrl") != null){
+            mPhotoUrl = arguments.getString("senderPhotoUrl");
         }
         //ChatRoom Initialization
         mFirebaseDatabaseReference.child(UESRCHAT).child(MESSAGES_CHILD).child(mUserId).child("name").setValue(mUsername);
@@ -208,9 +210,6 @@ public class ChatFragment extends Fragment {
                 }
 
                 viewHolder.messengerTextView.setText(message.getText());
-                //Update last message logic
-                mFirebaseDatabaseReference.child(UESRCHAT).child(MESSAGES_CHILD).child("lastMessage").setValue(message.getText());
-                mFirebaseDatabaseReference.child(UESRCHAT).child(MESSAGES_CHILD).child("lastUpdate").setValue(message.getTime());
                 if (message.getPhotoUrl() == null) {
                     viewHolder.messengerImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(),
                             R.drawable.ic_account_circle_black_36dp));
@@ -278,6 +277,9 @@ public class ChatFragment extends Fragment {
                             dateFormat.format(new Date()));
                     mFirebaseDatabaseReference.child(UESRCHAT).child(MESSAGES_CHILD).child(MESSAGES)
                             .push().setValue(message);
+                    //Update last message logic
+                    mFirebaseDatabaseReference.child(UESRCHAT).child(MESSAGES_CHILD).child("lastMessage").setValue(message.getText());
+                    mFirebaseDatabaseReference.child(UESRCHAT).child(MESSAGES_CHILD).child("lastUpdate").setValue(message.getTime());
                     mMessageEditText.setText("");
                 }
             }
