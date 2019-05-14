@@ -21,6 +21,10 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="Post Class" />
         <item
+            android:id="@+id/nav_postedClass"
+            android:icon="@drawable/ic_account_circle_black_24dp"
+            android:title="My Posted Class" />
+        <item
             android:id="@+id/nav_edit_profile"
             android:icon="@drawable/ic_account_circle_black_24dp"
             android:title="Edit Profile" />

@@ -153,7 +153,12 @@ public class MainActivity extends AppCompatActivity
             fragment = new ClassListFragment();
         }else if (id == R.id.nav_edit_profile) {
             fragment = new DisplayProfileFragment();
-        } else if (id == R.id.sign_out) {
+
+        } else if (id == R.id.nav_postedClass) {
+            fragment = new MyPostedClassFragment();
+        }
+
+        else if (id == R.id.sign_out) {
              mFirebaseAuth.signOut();
              Auth.GoogleSignInApi.signOut(mGoogleApiClient);
              mUsername = ANONYMOUS;
