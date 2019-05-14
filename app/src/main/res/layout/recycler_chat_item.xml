@@ -12,7 +12,7 @@
       android:id="@+id/avatarImageView"
       android:layout_width="80dp"
       android:layout_height="80dp"
-      tools:src="@tools:sample/avatars"/>
+      tools:src=""/>
 
   <LinearLayout
       android:layout_width="283dp"
@@ -29,19 +29,19 @@
         android:layout_marginBottom="8dp"
         android:textColor="@android:color/black"
         android:textSize="20sp"
-        tools:text="Eric Lau" />
+        tools:text="" />
 
     <TextView
         android:id="@+id/MsgTextView"
         android:layout_width="262dp"
         android:layout_height="wrap_content"
-        tools:text="say hi to FBI" />
+        tools:text="" />
 
     <TextView
         android:id="@+id/TimeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="03:12:12" />
+        tools:text="" />
   </LinearLayout>
 
 </LinearLayout>
