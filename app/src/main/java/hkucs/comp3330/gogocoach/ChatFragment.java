@@ -142,12 +142,7 @@ public class ChatFragment extends Fragment {
         MESSAGES_CHILD = uidCompareTo(mUserId, mReceiverUserId);
         mReceiverPhotoUrl = arguments.getString("receiverPhotoUrl");
         Log.d(TAG, "Open ChatFragment with receiverUid = "+mReceiverUserId);
-        if (mFirebaseUser.getPhotoUrl() != null) {
-            mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
-        }
-        if (arguments.getString("senderPhotoUrl") != null){
-            mPhotoUrl = arguments.getString("senderPhotoUrl");
-        }
+        mPhotoUrl = arguments.getString("senderPhotoUrl");
         //ChatRoom Initialization
         mFirebaseDatabaseReference.child(UESRCHAT).child(MESSAGES_CHILD).child(mUserId).child("name").setValue(mUsername);
         mFirebaseDatabaseReference.child(UESRCHAT).child(MESSAGES_CHILD).child(mUserId).child("icon").setValue(mPhotoUrl);
