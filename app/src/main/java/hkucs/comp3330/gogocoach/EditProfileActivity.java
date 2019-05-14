@@ -53,13 +53,11 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String sportTypes = ((TextView) findViewById(R.id.sportTypesInput)).getText().toString();
                 String bio = ((TextView) findViewById(R.id.bioInput)).getText().toString();
-                String name = mFirebaseUser.getDisplayName();
+                String name = ((TextView) findViewById(R.id.usernameInput)).getText().toString();
                 String photourl = mFirebaseUser.getPhotoUrl().toString();
                 String email = ((TextView) findViewById(R.id.emailInput)).getText().toString();
                 String contact = ((TextView) findViewById(R.id.contactNumberInput)).getText().toString();
                 profileRef.setValue(new Profile(sportTypes, bio, name, photourl, email, contact));
-
-
                 finish();
             }
         });
