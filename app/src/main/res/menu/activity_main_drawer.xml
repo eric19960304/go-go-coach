@@ -22,8 +22,12 @@
             android:title="Post Class" />
         <item
             android:id="@+id/nav_postedClass"
-            android:icon="@drawable/ic_account_circle_black_24dp"
+            android:icon="@drawable/ic_folder_black_24dp"
             android:title="My Posted Class" />
+        <item
+            android:id="@+id/nav_bookedClass"
+            android:icon="@drawable/ic_book_black_24dp"
+            android:title="My Booked Class" />
         <item
             android:id="@+id/nav_edit_profile"
             android:icon="@drawable/ic_account_circle_black_24dp"

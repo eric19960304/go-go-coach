@@ -161,6 +161,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_postedClass) {
             fragment = new MyPostedClassFragment();
         }
+        else if (id == R.id.nav_bookedClass) {
+            fragment = new MyBookedClassFragment();
+        }
 
         else if (id == R.id.sign_out) {
              mFirebaseAuth.signOut();
