@@ -98,7 +98,7 @@ public class DetailClassActivity extends AppCompatActivity {
                 Map<String, String> data1 = new HashMap<>();
                 data1.put("className", classToBook.className);
                 data1.put("coachId", classToBook.id);
-                mRootRef.child("profile").child(currentUserId).child("class").push().setValue(data1);
+                mRootRef.child("bookedClass").child(currentUserId).child("class").push().setValue(data1);
                 Toast.makeText(view.getContext(), "Class is booked.", Toast.LENGTH_LONG).show();
                 Intent i = new Intent();
                 i.putExtra("action", ACTION_BOOKING);
