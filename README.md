@@ -1,4 +1,4 @@
-# Go Go Goach - A Map-base Online Tutor Finding App
+# Go Go Goach - A Map-base Online Coach Finding App
 
 This is a group work of 5 students at the course COMP3330 at HKU.
 
